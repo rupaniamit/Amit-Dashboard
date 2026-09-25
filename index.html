@@ -688,12 +688,12 @@ function buildTableView(rows, kind) {
       !!r.new_this_week
     ]);
   } else {
-    const FLAG_BASE_COLS = ['★','Symbol','Status','Gain %','Pole (days)','Pole Window','Pullback %','Vol Ratio','Price','Mcap (Cr)','P/E','EV/EBITDA','ROE %','ROCE %','D/E','Sector', { ...SCREENER_COL }];
+    const FLAG_BASE_COLS = ['★','Symbol','Status','Gain %','Pole (days)','Pole Window','Pullback %','Chg %','Price','Mcap (Cr)','P/E','EV/EBITDA','ROE %','ROCE %','D/E','Sector', { ...SCREENER_COL }];
     const FLAG_IS_NEW_COL_IDX = FLAG_BASE_COLS.length;
     columns = [...withNewRowHighlight(FLAG_BASE_COLS, FLAG_IS_NEW_COL_IDX), { name: 'IsNew', hidden: true }];
     gridData = rows.map(r => [
       starCell(r.sym), symLink(r.sym), badge(r.status), num(r.gain,'%'), r.pole_days, r.low_date+' → '+r.high_date,
-      num(r.pullback,'%'), num(r.vol_ratio), num(r.fund_price), numInt(r.fund_mcap), num(r.fund_pe), num(r.fund_ev_ebitda), num(r.fund_roe,'%'), num(r.fund_roce,'%'), num(r.fund_de),
+      num(r.pullback,'%'), num(r.pct_change,'%'), num(r.fund_price), numInt(r.fund_mcap), num(r.fund_pe), num(r.fund_ev_ebitda), num(r.fund_roe,'%'), num(r.fund_roce,'%'), num(r.fund_de),
       r.sector || '-', screenerLinkCell(r.sym), !!r.is_new
     ]);
   }
@@ -749,7 +749,7 @@ function renderCard(r, screenKey) {
   } else {
     statsHtml = `<span>Gain <b>${num(r.gain,'%')}</b> / ${r.pole_days}d</span>
        <span>Pullback <b>${num(r.pullback,'%')}</b></span>
-       <span>Vol ratio <b>${num(r.vol_ratio)}</b></span>
+       <span>Chg <b>${num(r.pct_change,'%')}</b></span>
        <span>P/E <b>${num(r.fund_pe)}</b></span>
        <span>Mcap <b>${num(r.fund_mcap)}</b>Cr</span>`;
     legendHtml = `<span><span class="dot" style="background:#2563eb;"></span>Close</span>
