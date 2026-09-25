@@ -2,6 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
@@ -131,6 +132,31 @@
   .buy-mark-badge { font-size:11px; color:#eab308; font-weight:700; background:rgba(234,179,8,0.12); padding:3px 9px; border-radius:12px; }
   .buy-mark-clear { font-size:10.5px; color:var(--text-faint); cursor:pointer; text-decoration:underline; }
   .buy-mark-clear:hover { color:var(--text-dim); }
+
+  /* ── Mobile responsive ── */
+  @media (max-width: 600px) {
+    .header { padding:10px 12px 6px; }
+    .header h1 { font-size:16px; }
+    .header .sub { font-size:11px; }
+    .tabs { padding:0 8px; gap:2px; }
+    .tab-btn { padding:6px 8px; font-size:11.5px; }
+    .panel { padding:0 8px 20px; }
+    .controls-bar { padding:4px 8px 6px; gap:6px 0; }
+    .ctl-sep { margin:0 6px; }
+    .cardgrid { grid-template-columns: 1fr; gap:10px; }
+    .card { padding:10px 10px 8px; }
+    .card-sym { font-size:14px; }
+    .card-price-canvas-wrap { height:130px; }
+    .card-vol-canvas-wrap { height:40px; }
+    .card-stats { gap:6px; font-size:11px; }
+    .starred-watchlist { padding:0 8px 8px; }
+    #app .gridjs-wrapper { max-height:calc(100vh - var(--sticky-offset,0px) - 20px); }
+    .gridjs-search { width:100%; }
+    .gridjs-search-input { width:100% !important; box-sizing:border-box; }
+    .subview-toggle { flex-wrap:wrap; }
+    .loadmore-btn { width:100%; }
+    .buy-mark-row { gap:6px; }
+  }
 </style>
 <div class="sticky-head">
   <div class="header">
