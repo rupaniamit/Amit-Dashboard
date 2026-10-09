@@ -672,7 +672,8 @@ function buildTableView(rows, kind) {
   } else if (kind === 'w52') {
     const W52_COLS = ['★','Symbol',
       { name: 'Bucket', formatter: (cell) => bucketBadge(BUCKET_ORDER[cell] !== undefined ? BUCKET_ORDER[cell] : null) },
-      'Mcap (Cr)','CP','% Chg','New 52W High','Prev High',
+      { name: 'Mcap (Cr)', formatter: (cell) => cell === null || cell === undefined ? '-' : Math.round(cell).toString() },
+      'CP','% Chg','New 52W High','Prev High',
       { name: 'Prev High Date', formatter: (cell) => fmtDMY(cell) },
       'P/E','EV/EBITDA','ROE %','ROCE %','D/E','Sector', { ...SCREENER_COL }];
     const IS_NEW_COL_IDX = W52_COLS.length; // hidden trailing column, see newRowAttrs
@@ -682,7 +683,7 @@ function buildTableView(rows, kind) {
     // pre-sorted here before being handed to the grid.
     const sortedRows = [...rows].sort((a, b) => parseDMY(a.prev_high_date) - parseDMY(b.prev_high_date));
     gridData = sortedRows.map(r => [
-      starCell(r.sym), symLink(r.sym), bucketSortKey(r.bucket), numInt(r.fund_mcap), num(r.ltp), num(r.pct_change,'%'), num(r.new_high), num(r.prev_high), parseDMY(r.prev_high_date),
+      starCell(r.sym), symLink(r.sym), bucketSortKey(r.bucket), (r.fund_mcap ?? null), num(r.ltp), num(r.pct_change,'%'), num(r.new_high), num(r.prev_high), parseDMY(r.prev_high_date),
       num(r.fund_pe), num(r.fund_ev_ebitda), num(r.fund_roe,'%'), num(r.fund_roce,'%'), num(r.fund_de),
       r.sector || '-', screenerLinkCell(r.sym),
       !!r.new_this_week
