@@ -693,6 +693,13 @@ function buildTableView(rows, kind) {
     ]);
   } else if (kind === 'filtered') {
     // ---- Earnings Filtered List: historical Quarterly Analysis + starred Q2FY27 ----
+    // Migrate any old 2-digit FY years (Q2FY27 → Q2FY2027) saved in localStorage
+    (() => { try {
+      const raw = localStorage.getItem('qtrly_starred_v2'); if (!raw) return;
+      const m = JSON.parse(raw); let changed = false;
+      Object.values(m).forEach(v => { if (v.quarter && /^Q\dFY\d{2}$/.test(v.quarter)) { v.quarter = v.quarter.replace(/FY(\d{2})$/, (_,y)=>'FY20'+y); changed = true; } });
+      if (changed) localStorage.setItem('qtrly_starred_v2', JSON.stringify(m));
+    } catch(e){} })();
     const flStarredMap = (() => { try { return JSON.parse(localStorage.getItem('qtrly_starred_v2')||'{}'); } catch(e){return {};} })();
     const flStarredSet = new Set(Object.keys(flStarredMap));
     const flHistory = DATA.qtrly_history || [];
@@ -717,7 +724,7 @@ function buildTableView(rows, kind) {
       const atM  = meta.mcap ?? (r ? r.mcap : null);
       const move = (curM && atM && atM!==0) ? round1fl((curM-atM)/atM*100) : null;
       return {
-        date: meta.date || '', quarter: meta.quarter || 'Q2FY27',
+        date: meta.date || '', quarter: meta.quarter || 'Q2FY2027',
         name: r ? r.name : sym, sym,
         sector: r ? (r.industry||'') : '',
         mcap: atM, cur_mcap: curM, move,
@@ -737,6 +744,7 @@ function buildTableView(rows, kind) {
     let flSortCol = null, flSortAsc = true, flSearchQ = '';
 
     const FL_COLS = [
+      {key:'_del',    label:'',                 align:'center',num:false},
       {key:'date',    label:'Date',             align:'left',  num:false},
       {key:'quarter', label:'Quarter',           align:'left',  num:false},
       {key:'name',    label:'Name',              align:'left',  num:false},
@@ -749,14 +757,25 @@ function buildTableView(rows, kind) {
       {key:'np_yoy',  label:'NP YoY',            align:'right', num:true},
       {key:'pe',      label:'PE',                align:'right', num:true},
       {key:'ev_ebitda',label:'EV/EBITDA',        align:'right', num:true},
-      {key:'notes',   label:'Notes',             align:'left',  num:false},
       {key:'concall', label:'Concall',            align:'center',num:false},
+      {key:'notes',   label:'Notes',             align:'left',  num:false},
     ];
 
-    function flGetNoteKey(r) { return 'fl_note|' + r.name + '|' + r.quarter; }
+    function flGetNoteKey(r)    { return 'fl_note|'    + r.name + '|' + r.quarter; }
+    function flGetConcallKey(r) { return 'fl_concall|' + r.name + '|' + r.quarter; }
     function flGetNote(r) {
       try { const v = localStorage.getItem(flGetNoteKey(r)); return v != null ? v : (r.notes || ''); }
       catch(e) { return r.notes || ''; }
+    }
+    function flGetConcall(r) {
+      try { const v = localStorage.getItem(flGetConcallKey(r)); return v != null ? v : (r.concall || ''); }
+      catch(e) { return r.concall || ''; }
+    }
+    function flConcallColor(v) {
+      const u = (v||'').trim().toLowerCase();
+      if (u === 'yes') return '#4ade80';
+      if (u === 'no')  return '#f87171';
+      return 'var(--text-dim)';
     }
 
     function flQtrKey(q) {
@@ -768,7 +787,11 @@ function buildTableView(rows, kind) {
     }
 
     function flSortedRows() {
-      let rows = flAllRows.slice();
+      const deleted = flGetDeleted();
+      let rows = flAllRows.filter(r => {
+        const k = r.isCurrentQ ? ('fl_del_star|'+r.sym) : ('fl_del|'+r.name+'|'+r.quarter);
+        return !deleted.has(k);
+      });
       if (flSearchQ) {
         const q = flSearchQ.toLowerCase();
         rows = rows.filter(r => (r.name||'').toLowerCase().includes(q) || (r.quarter||'').toLowerCase().includes(q) || (r.sector||'').toLowerCase().includes(q) || (r.date||'').toLowerCase().includes(q) || flGetNote(r).toLowerCase().includes(q));
@@ -792,15 +815,15 @@ function buildTableView(rows, kind) {
     function flBuildRows(rows) {
       return rows.map((r,i) => {
         const bg = r.isCurrentQ ? 'background:rgba(251,191,36,0.06);' : (i%2===0?'':'background:rgba(255,255,255,0.015);');
-        const symLink = r.sym ? `<a href="https://www.screener.in/company/${encodeURIComponent(r.sym)}/" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;font-weight:700;margin-right:4px;">${r.sym}</a>` : '';
-        const badge = r.isCurrentQ ? `<span style="font-size:9px;background:#fbbf24;color:#000;padding:1px 5px;border-radius:3px;font-weight:700;margin-right:4px;">★</span>` : '';
         const moveStr = r.move==null ? '—' : (r.move>0?'+':'')+r.move.toFixed(1)+'%';
         const noteVal = flGetNote(r);
         const noteCss = 'padding:5px 10px;font-size:12px;border-bottom:1px solid rgba(255,255,255,0.04);min-width:140px;max-width:260px;white-space:normal;word-break:break-word;color:var(--text-dim);cursor:text;outline:none;';
+        const delKey = r.isCurrentQ ? ('fl_del_star|'+r.sym) : ('fl_del|'+r.name+'|'+r.quarter);
         return `<tr style="${bg}" data-idx="${i}">
+          <td style="padding:5px 4px;font-size:12px;color:var(--text-dim);border-bottom:1px solid rgba(255,255,255,0.04);white-space:nowrap;text-align:center;"><button data-delkey="${delKey.replace(/"/g,'&quot;')}" title="Delete row" style="background:none;border:none;color:#f87171;cursor:pointer;font-size:13px;padding:0 4px;opacity:0.5;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.5">✕</button></td>
           <td style="padding:5px 10px;font-size:12px;color:var(--text-dim);border-bottom:1px solid rgba(255,255,255,0.04);white-space:nowrap;">${r.date||'—'}</td>
           <td style="padding:5px 10px;font-size:12px;color:var(--text-dim);border-bottom:1px solid rgba(255,255,255,0.04);white-space:nowrap;">${r.quarter||'—'}</td>
-          <td style="padding:5px 10px;font-size:12px;border-bottom:1px solid rgba(255,255,255,0.04);white-space:nowrap;">${badge}${symLink}<span style="font-size:11.5px;">${r.name}</span></td>
+          <td style="padding:5px 10px;font-size:12px;border-bottom:1px solid rgba(255,255,255,0.04);white-space:nowrap;">${r.name}</td>
           <td style="padding:5px 10px;font-size:12px;border-bottom:1px solid rgba(255,255,255,0.04);white-space:nowrap;"><span style="font-size:10px;color:var(--text-dim);">${r.sector||'—'}</span></td>
           <td style="padding:5px 10px;font-size:12px;text-align:right;color:var(--text-dim);border-bottom:1px solid rgba(255,255,255,0.04);">${fmtMcap(r.mcap)}</td>
           <td style="padding:5px 10px;font-size:12px;text-align:right;color:var(--text-dim);border-bottom:1px solid rgba(255,255,255,0.04);">${fmtMcap(r.cur_mcap)}</td>
@@ -810,8 +833,8 @@ function buildTableView(rows, kind) {
           <td style="padding:5px 10px;font-size:12px;text-align:right;${qpctC(r.np_yoy)}border-bottom:1px solid rgba(255,255,255,0.04);">${qYoYF(r.np_yoy)}</td>
           <td style="padding:5px 10px;font-size:12px;text-align:right;color:var(--text-dim);border-bottom:1px solid rgba(255,255,255,0.04);">${qpff(r.pe,1)}</td>
           <td style="padding:5px 10px;font-size:12px;text-align:right;color:var(--text-dim);border-bottom:1px solid rgba(255,255,255,0.04);">${qpff(r.ev_ebitda,1)}</td>
+          <td contenteditable="true" data-concallkey="${flGetConcallKey(r).replace(/"/g,'&quot;')}" style="padding:5px 10px;font-size:12px;text-align:center;border-bottom:1px solid rgba(255,255,255,0.04);white-space:nowrap;cursor:text;outline:none;color:${flConcallColor(flGetConcall(r))};font-weight:600;">${(flGetConcall(r)||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</td>
           <td contenteditable="true" data-notekey="${flGetNoteKey(r).replace(/"/g,'&quot;')}" style="${noteCss}">${noteVal ? noteVal.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') : ''}</td>
-          <td style="padding:5px 10px;font-size:12px;text-align:center;border-bottom:1px solid rgba(255,255,255,0.04);white-space:nowrap;">${r.concall ? `<span style="font-size:10px;color:${r.concall==='Yes'?'#4ade80':'var(--text-dim)'};">${r.concall}</span>` : '—'}</td>
         </tr>`;
       }).join('');
     }
@@ -873,17 +896,46 @@ function buildTableView(rows, kind) {
       flRender();
     });
 
-    // Notes: save on blur (event delegation)
+    // Delete row handler
+    const flDeletedKey = 'fl_deleted_v1';
+    function flGetDeleted() { try { return new Set(JSON.parse(localStorage.getItem(flDeletedKey)||'[]')); } catch(e){return new Set();} }
+    function flSaveDeleted(s) { try { localStorage.setItem(flDeletedKey, JSON.stringify([...s])); } catch(e){} }
+    flWrap.querySelector('#fl-tbody').addEventListener('click', function(e) {
+      const btn = e.target.closest('button[data-delkey]');
+      if (!btn) return;
+      const key = btn.dataset.delkey;
+      if (!confirm('Delete this row from the Earnings Filtered List?')) return;
+      if (key.startsWith('fl_del_star|')) {
+        // Starred row — unstar it
+        const sym = key.slice('fl_del_star|'.length);
+        try { const m=JSON.parse(localStorage.getItem('qtrly_starred_v2')||'{}'); delete m[sym]; localStorage.setItem('qtrly_starred_v2',JSON.stringify(m)); } catch(e){}
+      } else {
+        // History row — add to deleted set
+        const d = flGetDeleted(); d.add(key); flSaveDeleted(d);
+      }
+      flRender();
+    });
+
+    // Notes + Concall: save on blur, update Concall color live (event delegation)
     flWrap.querySelector('#fl-tbody').addEventListener('blur', function(e) {
       const td = e.target.closest('td[contenteditable]');
       if (!td) return;
-      const key = td.dataset.notekey;
-      if (!key) return;
-      try { localStorage.setItem(key, td.textContent.trim()); } catch(err) {}
+      if (td.dataset.notekey) {
+        try { localStorage.setItem(td.dataset.notekey, td.textContent.trim()); } catch(err) {}
+      } else if (td.dataset.concallkey) {
+        const val = td.textContent.trim();
+        try { localStorage.setItem(td.dataset.concallkey, val); } catch(err) {}
+        td.style.color = flConcallColor(val);
+      }
+    }, true);
+    flWrap.querySelector('#fl-tbody').addEventListener('input', function(e) {
+      const td = e.target.closest('td[data-concallkey][contenteditable]');
+      if (!td) return;
+      td.style.color = flConcallColor(td.textContent.trim());
     }, true);
 
     // Export helpers
-    const FL_HEADERS = ['Date','Quarter','Name','Sector','MCap (Cr)','Current MCap (Cr)','Move After Result %','Sales YoY %','EBITDA YoY %','NP YoY %','PE','EV/EBITDA','Notes'];
+    const FL_HEADERS = ['Date','Quarter','Name','Sector','MCap (Cr)','Current MCap (Cr)','Move After Result %','Sales YoY %','EBITDA YoY %','NP YoY %','PE','EV/EBITDA','Concall','Notes'];
     function flRowToArr(r) {
       const mv = r.move==null?'':r.move.toFixed(1);
       const yoy = v => v==null?'':Number(v).toFixed(1);
@@ -894,6 +946,7 @@ function buildTableView(rows, kind) {
         yoy(r.sales_yoy), yoy(r.ebitda_yoy), yoy(r.np_yoy),
         r.pe==null?'':Number(r.pe).toFixed(1),
         r.ev_ebitda==null?'':Number(r.ev_ebitda).toFixed(1),
+        flGetConcall(r),
         flGetNote(r),
       ];
     }
@@ -1144,7 +1197,7 @@ function buildTableView(rows, kind) {
         const fmtFileDate = d => { if(!d) return ''; try { const dt=new Date(d); return dt.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'}); } catch(e){return d;} };
         qStarredMap[sym] = {
           date: rowData && rowData.file_date ? fmtFileDate(rowData.file_date) : qTodayStr,
-          quarter: qMeta.cur_label ? ('Q' + {Jan:4,Feb:4,Mar:4,Apr:1,May:1,Jun:1,Jul:2,Aug:2,Sep:2,Oct:3,Nov:3,Dec:3}[qMeta.cur_label.split(' ')[0]] + 'FY' + (parseInt(qMeta.cur_label.split(' ')[1])%100+1)) : 'Q2FY27',
+          quarter: (() => { if (!qMeta.cur_label) return 'Q2FY2027'; const [mon,yr] = qMeta.cur_label.split(' '); const qn = {Jan:4,Feb:4,Mar:4,Apr:1,May:1,Jun:1,Jul:2,Aug:2,Sep:2,Oct:3,Nov:3,Dec:3}[mon]||2; const fy = parseInt(yr) + (['Jan','Feb','Mar'].includes(mon)?0:1); return 'Q'+qn+'FY'+fy; })(),
           mcap: rowData ? rowData.mcap : null,
         };
         qStarred.add(sym);
