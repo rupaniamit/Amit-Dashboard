@@ -996,7 +996,7 @@ function buildTableView(rows, kind) {
     const qSaveStars = () => { try { localStorage.setItem('qtrly_starred_v2', JSON.stringify(qStarredMap)); } catch(e){} };
     const qTodayStr = new Date().toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
     const qpf  = (v,d=1,sfx='') => { if (v==null) return '—'; const n=Number(v); if (isNaN(n)) return '—'; const s=n.toFixed(d); return (d===0 ? parseInt(s,10).toLocaleString('en-IN') : s)+sfx; };
-    const qYoY = (v) => v==null ? '—' : Math.abs(v)>9999 ? (v>0?'>9999%':'<-9999%') : v.toFixed(1)+'%';
+    const qYoY = (v) => v==null ? '—' : Math.abs(v)>9999 ? (v>0?'>9999%':'<-9999%') : Math.round(v)+'%';
     const qpi  = v => v==null ? '—' : Math.round(v).toLocaleString();
     const qPctStyle = v => v==null?'color:var(--text-dim)':v>=15?'color:#4ade80;font-weight:700':v>=0?'color:#86efac':'color:#f87171;font-weight:700';
     const qOpmStyle = v => v==null?'color:var(--text-dim)':v>0?'color:#4ade80':v<0?'color:#f87171':'';
@@ -1041,9 +1041,9 @@ function buildTableView(rows, kind) {
           const opmRow = `<tr>
             <td ${qTdL()}>OPM%</td>
             <td ${qTd(qOpmStyle(r.opm_exp))}>${r.opm_exp==null?'—':(r.opm_exp>0?'+':'')+r.opm_exp.toFixed(1)+'pp'}</td>
-            <td ${qTdN()}>${qpf(r.opm_cq,1,'%')}</td>
-            <td ${qTdN()}>${qpf(r.opm_pq,1,'%')}</td>
-            <td ${qTdN()}>${qpf(r.opm_ya,1,'%')}</td>
+            <td ${qTdN()}>${qpf(r.opm_cq,0,'%')}</td>
+            <td ${qTdN()}>${qpf(r.opm_pq,0,'%')}</td>
+            <td ${qTdN()}>${qpf(r.opm_ya,0,'%')}</td>
           </tr>`;
           const epsRow = `<tr>
             <td ${qTdL()}>EPS</td>
