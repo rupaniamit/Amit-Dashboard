@@ -622,6 +622,7 @@ const screens = [
   { key: 'screen_b', label: 'Tight Flag2 (50%/8wk/20%)', kind: 'flag', chartToggle: true },
   { key: 'qtrly_results', label: 'Quarterly Results', kind: 'qtrly', chartToggle: false },
   { key: 'filtered_list', label: 'Earnings Filtered List', kind: 'filtered', chartToggle: false },
+  { key: 'ideas_to_work', label: 'Filtered Ideas to Work', kind: 'ideas', chartToggle: false },
 ];
 
 const tabsEl = document.getElementById('tabs');
@@ -975,6 +976,320 @@ function buildTableView(rows, kind) {
       XLSX.writeFile(wb, 'Earnings_Filtered_List.xlsx');
     });
 
+    columns = null; gridData = null;
+
+  } else if (kind === 'ideas') {
+    // ---- Filtered Ideas to Work — localStorage-backed editable table ----
+    const IDEAS_KEY = 'filtered_ideas_v1';
+    const IDEAS_SEED = [
+{"date":"8/6/2025","name":"Avalon Tech","w52high":"No","ped":"Yes","notes":"EMS - aspirational goal to double topline in 3 years (fy24 to fy27)","pe":"","ev_ebitda":"","concall":"https://www.youtube.com/watch?v=YtM648EQ3X4"},
+{"date":"7/29/2025","name":"Bharat Seats","w52high":"NA","ped":"Yes","notes":"CAPEX sweating play","pe":"","ev_ebitda":"","concall":""},
+{"date":"8/4/2025","name":"BLS International","w52high":"No","ped":"Yes","notes":"Consistent Performer","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"8/4/2025","name":"Cantabil Retail","w52high":"No","ped":"Yes","notes":"Targeting store expansion and 1000cr topline in next 2 years","pe":"","ev_ebitda":"","concall":""},
+{"date":"8/1/2025","name":"Capril Global","w52high":"No","ped":"Yes","notes":"Talking about doubling AUM in next 3 years. Available at 3.2 P/B","pe":"","ev_ebitda":"","concall":""},
+{"date":"8/11/2025","name":"Creative Graphics Solution","w52high":"","ped":"","notes":"","pe":"","ev_ebitda":"","concall":"No"},
+{"date":"8/11/2025","name":"Dee Development","w52high":"No","ped":"Yes","notes":"Strong orders and revenue visibility","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"7/29/2025","name":"Deepak Fertilizer","w52high":"NA","ped":"Yes","notes":"CAPEX sweating play","pe":"","ev_ebitda":"","concall":"https://www.solidarity.in/investment-thesis-on-yasho-industries/"},
+{"date":"8/15/2025","name":"Dharmaj Crop","w52high":"No","ped":"Yes","notes":"Guiding 2000cr topline by FY30","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"8/11/2025","name":"Fredun Pharma","w52high":"","ped":"","notes":"","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"8/9/2025","name":"Genus Power","w52high":"No","ped":"Yes","notes":"solid execution - smart meter","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"8/6/2025","name":"Hind Rectifier","w52high":"Yes","ped":"Yes","notes":"Check if product mix is changing. Can do 1200-1500cr revenue from current capacity.","pe":"","ev_ebitda":"","concall":""},
+{"date":"7/30/2025","name":"Insecticides","w52high":"Yes","ped":"Yes","notes":"CAPEX sweating play","pe":"","ev_ebitda":"","concall":""},
+{"date":"8/10/2025","name":"Interarch","w52high":"Yes","ped":"Yes","notes":"consistent performer","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"8/6/2025","name":"Krishana Phoschem","w52high":"Yes","ped":"Yes","notes":"","pe":"","ev_ebitda":"","concall":""},
+{"date":"8/6/2025","name":"Manaksia Coated","w52high":"Yes","ped":"Yes","notes":"Guiding 1500cr topline with 10%+ EBITDA margin","pe":"","ev_ebitda":"","concall":""},
+{"date":"8/11/2025","name":"NAMS","w52high":"","ped":"","notes":"","pe":"","ev_ebitda":"","concall":""},
+{"date":"7/30/2025","name":"Nesco","w52high":"No","ped":"Yes","notes":"CAPEX sweating play + won tenders to build and operate gas stations on highways","pe":"","ev_ebitda":"","concall":""},
+{"date":"8/6/2025","name":"Paradeep Phosphates","w52high":"Yes","ped":"Yes","notes":"Solid Execution","pe":"","ev_ebitda":"","concall":""},
+{"date":"7/25/2025","name":"Paramount Communications","w52high":"NA","ped":"Yes","notes":"Target to grow minimum 30% over next 5 years and exceed Rs. 5k revenues by FY2030","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"8/10/2025","name":"PG Electroplast","w52high":"No","ped":"No","notes":"Possible fallen angel","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"7/30/2025","name":"Pondy Oxide","w52high":"Yes","ped":"Yes","notes":"CAPEX sweating play","pe":"","ev_ebitda":"","concall":""},
+{"date":"8/9/2025","name":"Ramco Systems","w52high":"No","ped":"Yes","notes":"Turnaround - have launched new payroll service product","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"8/6/2025","name":"Sagility","w52high":"No","ped":"Yes","notes":"","pe":"","ev_ebitda":"","concall":""},
+{"date":"8/10/2025","name":"Salzer Electronics","w52high":"No","ped":"Yes","notes":"solid execution - smart meter","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"7/31/2025","name":"SPML Infra","w52high":"Yes","ped":"No","notes":"Turnaround + BESS story","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"7/25/2025","name":"Stallion India Fluoro","w52high":"Yes","ped":"NA","notes":"Mgmt has guided 30-35% CAGR for next 3 years. New CAPEX sweating play.","pe":"30","ev_ebitda":"19","concall":"Yes"},
+{"date":"8/3/2025","name":"Stove Kraft","w52high":"No","ped":"No","notes":"CAPEX sweating play","pe":"","ev_ebitda":"","concall":""},
+{"date":"7/30/2025","name":"Tatva Chintan","w52high":"No","ped":"Probably","notes":"CAPEX sweating play + turnaround candidate","pe":"","ev_ebitda":"","concall":""},
+{"date":"8/6/2025","name":"TD Power Systems","w52high":"Yes","ped":"Yes","notes":"Superb execution","pe":"","ev_ebitda":"","concall":""},
+{"date":"8/14/2025","name":"Techno Elec Eng","w52high":"No","ped":"Yes","notes":"Data Center theme","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"8/7/2025","name":"TransIndia Real","w52high":"No","ped":"No","notes":"0.62 P/B and 500cr undeveloped landbank","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"7/30/2025","name":"V2 Retail","w52high":"Yes","ped":"Yes","notes":"Solid Execution","pe":"","ev_ebitda":"","concall":""},
+{"date":"7/30/2025","name":"Yasho Industries","w52high":"No","ped":"Yes","notes":"CAPEX sweating play","pe":"","ev_ebitda":"","concall":""},
+{"date":"8/15/2025","name":"Zaggle Prepaid","w52high":"No","ped":"Yes","notes":"Guiding 35-40% topline growth for FY26 and EBITDA of 10-11% with goal to take it to 13-14% in long run","pe":"","ev_ebitda":"","concall":"Yes | Too complex"},
+{"date":"8/9/2025","name":"Zota Healthcare","w52high":"Yes","ped":"Yes","notes":"Aggressively opening pharmacy stores","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"8/21/2025","name":"Nava","w52high":"Yes","ped":"","notes":"","pe":"","ev_ebitda":"","concall":""},
+{"date":"9/30/2025","name":"Goodluck India","w52high":"Yes","ped":"Yes","notes":"","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"10/14/2025","name":"Tara chand","w52high":"Yes","ped":"Yes","notes":"","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"10/21/2025","name":"Avantel","w52high":"Yes","ped":"No","notes":"","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"11/3/2025","name":"Knowledge Marine","w52high":"Yes","ped":"","notes":"Stopped Recently","pe":"","ev_ebitda":"","concall":""},
+{"date":"11/3/2025","name":"Rishi Laser","w52high":"","ped":"Yes","notes":"","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"11/10/2025","name":"M&B Engineering","w52high":"Yes","ped":"","notes":"","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"11/17/2025","name":"Borana Weaves","w52high":"Yes","ped":"","notes":"","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"","name":"SRM Contractors","w52high":"","ped":"","notes":"","pe":"","ev_ebitda":"","concall":""},
+{"date":"11/28/2025","name":"Rossell Techsys","w52high":"Yes","ped":"","notes":"","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"11/28/2025","name":"Maan Aluminium","w52high":"Yes","ped":"","notes":"","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"1/6/2026","name":"Rashi Peripherals","w52high":"Yes","ped":"","notes":"","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"4/20/2026","name":"SG Finserv","w52high":"Yes","ped":"Yes","notes":"","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"4/28/2026","name":"PNGS Gargi","w52high":"","ped":"","notes":"Ankit Gupta","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"4/28/2026","name":"Sejal Glass","w52high":"","ped":"Yes","notes":"","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"4/28/2026","name":"Macfos Ltd","w52high":"","ped":"Yes","notes":"","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"5/1/2026","name":"Servotech Power","w52high":"","ped":"Yes","notes":"","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"5/1/2026","name":"Ideaforge Tech","w52high":"","ped":"Yes","notes":"","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"5/1/2026","name":"Railtel","w52high":"","ped":"Yes","notes":"","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"5/5/2026","name":"Frontier Springs","w52high":"Yes","ped":"","notes":"","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"5/5/2026","name":"Sportking India","w52high":"Yes","ped":"","notes":"","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"5/5/2026","name":"IKIO Technologies","w52high":"","ped":"Yes","notes":"Margins recovering","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"5/5/2026","name":"GNG Electronics","w52high":"Yes","ped":"Yes","notes":"","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"5/7/2026","name":"Stylam","w52high":"Yes","ped":"Yes","notes":"Big CAPEX","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"5/8/2026","name":"Jain Recycling","w52high":"","ped":"","notes":"","pe":"","ev_ebitda":"","concall":""},
+{"date":"5/9/2026","name":"Wonderla","w52high":"","ped":"Yes","notes":"Big CAPEX","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"5/16/2026","name":"Concord Control System","w52high":"Yes","ped":"Yes","notes":"aggressive growth","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"5/16/2026","name":"Euro Pratik Sales","w52high":"Yes","ped":"Yes","notes":"Big CAPEX","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"5/18/2026","name":"Sheela Foam","w52high":"No","ped":"Yes","notes":"Turnaround candidate","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"5/18/2026","name":"Creative New Tech","w52high":"No","ped":"Yes","notes":"Aggressive growth plans","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"5/18/2026","name":"Shadowfax Tech","w52high":"No","ped":"Yes","notes":"New IPO","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"5/19/2026","name":"Deccan Gold Mine","w52high":"Yes","ped":"Yes","notes":"New Mines","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"5/21/2026","name":"Fineotex Chem","w52high":"Yes","ped":"Yes","notes":"Massive number and guidance","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"5/21/2026","name":"Seamec","w52high":"Yes","ped":"Yes","notes":"Huge quarter","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"6/3/2026","name":"Indo Borax","w52high":"Yes","ped":"Yes","notes":"New Mgmt - First Concall","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"6/3/2026","name":"Namo Ewaste","w52high":"Yes","ped":"Yes","notes":"Very aggressive growth targets","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"6/3/2026","name":"Z-tech India","w52high":"Yes","ped":"Yes","notes":"Very aggressive growth targets","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"6/5/2026","name":"Shringar House of Mangalsutra","w52high":"No","ped":"Yes","notes":"Cheap and 30% growth guidance","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"6/5/2026","name":"Redtape","w52high":"No","ped":"Yes","notes":"demerger and planning to add 200 new stores","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"6/5/2026","name":"Shree Refrigerations","w52high":"Yes","ped":"Yes","notes":"massive topline aspiration. Data center cooling play","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"6/5/2026","name":"One Point One","w52high":"Yes","ped":"Yes","notes":"massive topline aspiration","pe":"","ev_ebitda":"","concall":"Yes - First Concall"},
+{"date":"6/6/2026","name":"Network People","w52high":"No","ped":"Yes","notes":"70% CAGR topline guidance","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"6/7/2026","name":"Renaissance Global","w52high":"No","ped":"Yes","notes":"Numbers improving and US D2C stores expansion plans","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"6/9/2026","name":"Blue Water Logistics","w52high":"Yes","ped":"Yes","notes":"100% growth CAGR for next 2 years","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"7/1/2026","name":"Signpost India","w52high":"Yes","ped":"Yes","notes":"","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"7/1/2026","name":"PSP Projects","w52high":"Yes","ped":"Yes","notes":"","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"7/6/2026","name":"JTL Industries","w52high":"Yes","ped":"Yes","notes":"","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"7/9/2026","name":"Forcas Studio","w52high":"Yes","ped":"Yes","notes":"","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"7/13/2026","name":"Filatex India","w52high":"Yes","ped":"Yes","notes":"","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"7/13/2026","name":"Creative New Tech","w52high":"No","ped":"Yes","notes":"Aggressive growth plans","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"7/21/2026","name":"Dynamic Cables","w52high":"Yes","ped":"Yes","notes":"","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"7/22/2026","name":"Vardhman Special Steels","w52high":"Yes","ped":"Yes","notes":"Big Capex","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"7/22/2026","name":"Ador Welding","w52high":"Yes","ped":"Yes","notes":"Big Capex","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"7/22/2026","name":"Orient Electric","w52high":"No","ped":"Yes","notes":"Big Capex","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"7/23/2026","name":"Intl Gems","w52high":"No","ped":"Yes","notes":"Consistent","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"7/29/2026","name":"PNGS Reva","w52high":"Yes","ped":"Yes","notes":"","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"7/30/2026","name":"Quess","w52high":"Yes","ped":"Yes","notes":"very attractive valuation for 20% ROE business","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"8/2/2026","name":"Steelcast","w52high":"Yes","ped":"Yes","notes":"consistency","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"8/2/2026","name":"Anlon Healthcare","w52high":"Yes","ped":"Yes","notes":"30% CAGR guidance at 25% EBITDA","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"8/2/2026","name":"Blusping Enterprises","w52high":"Yes","ped":"Yes","notes":"targeting doubling in EBITDA in 1 year","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"8/4/2026","name":"Ganesha Ecosphere","w52high":"No","ped":"Yes","notes":"Turnaround candidate","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"8/4/2026","name":"Restaurant Brand","w52high":"No","ped":"Yes","notes":"Turnaround candidate. 20% UC on Q1FY27 results","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"8/4/2026","name":"Deepak Nitrite","w52high":"No","ped":"Yes","notes":"highest qtrly margin in 3 years and is doing huge CAPEX","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"8/4/2026","name":"Sheela Foam","w52high":"No","ped":"Yes","notes":"Turnaround candidate - Repeat - second good quarter","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"8/4/2026","name":"Styrenix Performance","w52high":"No","ped":"Yes","notes":"explosive margin - check if sustainable","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"8/4/2026","name":"United Food Brands","w52high":"Yes","ped":"Yes","notes":"excellent quarterly results","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"8/6/2026","name":"Diffusion Engineering","w52high":"Yes","ped":"No","notes":"big capex and big plans - 900cr topline at 15% EBITDA - 3 bagger opportunity in 3 years if execution happ","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"8/6/2026","name":"Rategain Travel","w52high":"Yes","ped":"Yes","notes":"excellent quarterly results","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"8/6/2026","name":"Wakefit Innovation","w52high":"No","ped":"Yes","notes":"cheap, retail, high ROE, extreme competition","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"8/6/2026","name":"Premier Energies","w52high":"No","ped":"Yes","notes":"cheap, why market not paying for growth","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"8/6/2026","name":"The Anup Engineering","w52high":"No","ped":"No","notes":"fallen angel - understand why it has fallen","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"8/7/2026","name":"Electronics Mart","w52high":"Yes","ped":"Yes","notes":"Breakout q1fy27 numbers","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"8/7/2026","name":"Travel Food","w52high":"Yes","ped":"Yes","notes":"","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"8/8/2026","name":"Excelsoft Tech","w52high":"No","ped":"Yes","notes":"Ambitious guidance","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"8/12/2026","name":"Euro Pratik Sales","w52high":"Yes","ped":"Yes","notes":"Big CAPEX","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"8/12/2026","name":"Tembo Global","w52high":"No","ped":"Yes","notes":"Extraordinary topline expectations","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"8/12/2026","name":"TCPL Packaging","w52high":"Yes","ped":"Yes","notes":"New venture","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"8/12/2026","name":"Frontier Springs","w52high":"No","ped":"No","notes":"excellent ROE business with a bad quarter and strong guidance for fy27","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"8/12/2026","name":"Valiant Communications","w52high":"Yes","ped":"Yes","notes":"AI Tailwind","pe":"","ev_ebitda":"","concall":"No"},
+{"date":"8/13/2026","name":"Gem Aromatics","w52high":"No","ped":"No","notes":"Rupesh","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"8/13/2026","name":"V2 Retail","w52high":"Yes","ped":"Yes","notes":"solid execution","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"8/13/2026","name":"Hexagon","w52high":"Yes","ped":"Yes","notes":"New IPO and looks int business model","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"8/19/2026","name":"Neogen Chemicals","w52high":"Yes","ped":"Yes","notes":"Big CAPEX","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"8/20/2026","name":"Tinna Rubber","w52high":"Yes","ped":"Yes","notes":"Doubling topline by FY29","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"8/24/2026","name":"Redington","w52high":"Yes","ped":"Yes","notes":"India Data Center business is growing rapidly","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"8/25/2026","name":"PVR Inox","w52high":"Yes","ped":"Yes","notes":"Turnaround story?","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"8/26/2026","name":"IOL CP","w52high":"Yes","ped":"Yes","notes":"looked on 8/26 - story is about moving from ibuprofen business to non-ibuprofen business...buy if close to 5000cr mcap for a possible doubler","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"8/26/2026","name":"Ind-swift Lab","w52high":"Yes","ped":"Yes","notes":"First concall","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"8/26/2026","name":"Akiko","w52high":"Yes","ped":"Yes","notes":"Aggressive growth targets","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"8/26/2026","name":"Arham Tech","w52high":"Yes","ped":"Yes","notes":"Aggressive growth targets","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"8/26/2026","name":"Freshara Agro","w52high":"Yes","ped":"Yes","notes":"excellent ROE business with a bad quarter and strong guidance for fy27","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"8/27/2026","name":"Shree Pushkar Chemicals","w52high":"Yes","ped":"Yes","notes":"8/27 - mgmt has slipped on capex commercialisation and topline guidance multiple times in the past. Cannot rely on management's guidance.","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"8/28/2026","name":"Shyam Metalics","w52high":"Yes","ped":"Yes","notes":"management planning to expand ROE by 6-7% in next 4 years. Possibly 3 bagger","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"8/28/2026","name":"Blue Water Logistics","w52high":"Yes","ped":"Yes","notes":"super explosive growth but low multiple","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"8/28/2026","name":"JG Chem","w52high":"Yes","ped":"Yes","notes":"CAPEX sweating plus ROE expansion","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"8/31/2026","name":"Q-Line Biotech","w52high":"Yes","ped":"Yes","notes":"SME - Abakkus and Vikas Khemani invested - high margin business","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"9/3/2026","name":"Raymond","w52high":"Yes","ped":"Yes","notes":"","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"9/7/2026","name":"Rane Madras","w52high":"Yes","ped":"Yes","notes":"","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"9/10/2026","name":"Anlon Healthcare","w52high":"Yes","ped":"Yes","notes":"Repeat","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"9/24/2026","name":"Bluspring Enterprises","w52high":"Yes","ped":"Yes","notes":"ATH - turning profitable with aggressive guidance for FY27","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"9/24/2026","name":"Nazara Technology","w52high":"Yes","ped":"Yes","notes":"turnaround - showing relative strength - change of management","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"9/24/2026","name":"Protean Egov","w52high":"No","ped":"No","notes":"possibly turnaround - made a pole","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"9/24/2026","name":"eMudhra","w52high":"No","ped":"No","notes":"Pole - guidance of 2x PAT in 3 years","pe":"","ev_ebitda":"","concall":"Yes"},
+{"date":"10/16/2026","name":"Felix Industries","w52high":"No","ped":"No","notes":"Sandeep Kapadia holding 2%","pe":"","ev_ebitda":"","concall":"Yes"}
+];
+
+    // Load from localStorage (seed on first load)
+    function ideasLoad() {
+      try { const d = localStorage.getItem(IDEAS_KEY); return d ? JSON.parse(d) : null; } catch(e) { return null; }
+    }
+    function ideasSave(arr) {
+      try { localStorage.setItem(IDEAS_KEY, JSON.stringify(arr)); } catch(e) {}
+    }
+    let ideasData = ideasLoad();
+    if (!ideasData) { ideasData = IDEAS_SEED.map((r,i) => ({...r, _id: i})); ideasSave(ideasData); }
+    // ensure each row has _id
+    ideasData.forEach((r,i) => { if (r._id == null) r._id = i; });
+
+    let ideasSortCol = 'date', ideasSortAsc = true;
+
+    const IDEA_COLS = [
+      {key:'date',     label:'Date Filtered', w:'90px',  editable:true},
+      {key:'name',     label:'Name',          w:'160px', editable:true},
+      {key:'w52high',  label:'52W High',      w:'80px',  editable:true},
+      {key:'ped',      label:'PED',           w:'60px',  editable:true},
+      {key:'notes',    label:'Notes',         w:'320px', editable:true},
+      {key:'pe',       label:'PE',            w:'60px',  editable:true},
+      {key:'ev_ebitda',label:'EV/EBITDA',     w:'80px',  editable:true},
+      {key:'concall',  label:'Con-call',      w:'200px', editable:true},
+    ];
+
+    function parseDateForSort(s) {
+      if (!s) return 0;
+      const p = s.split('/'); if (p.length===3) { return parseInt(p[2])*10000+parseInt(p[0])*100+parseInt(p[1]); }
+      return 0;
+    }
+
+    function ideasRender() {
+      const sorted = [...ideasData].sort((a,b) => {
+        const col = ideasSortCol;
+        let va = a[col]||'', vb = b[col]||'';
+        if (col === 'date') { va = parseDateForSort(va); vb = parseDateForSort(vb); }
+        else { va = va.toLowerCase(); vb = vb.toLowerCase(); }
+        return ideasSortAsc ? (va < vb ? -1 : va > vb ? 1 : 0) : (va > vb ? -1 : va < vb ? 1 : 0);
+      });
+
+      const container = document.getElementById('panel-ideas_to_work');
+      container.innerHTML = '';
+
+      // Toolbar
+      const toolbar = document.createElement('div');
+      toolbar.style.cssText = 'display:flex;gap:8px;align-items:center;padding:10px 14px;border-bottom:1px solid var(--border);flex-wrap:wrap;';
+      toolbar.innerHTML = `
+        <span style="font-size:13px;font-weight:700;color:var(--text);">Filtered Ideas to Work</span>
+        <span style="font-size:12px;color:var(--text-dim);">${ideasData.length} ideas</span>
+        <button id="ideas-add-btn" style="margin-left:auto;padding:4px 12px;background:var(--accent);color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:12px;">+ Add Row</button>
+        <button id="ideas-reset-btn" style="padding:4px 10px;background:none;border:1px solid var(--border);color:var(--text-dim);border-radius:4px;cursor:pointer;font-size:11px;" title="Reset to seed data (loses edits)">Reset</button>
+      `;
+      container.appendChild(toolbar);
+
+      // Table wrapper
+      const wrap = document.createElement('div');
+      wrap.style.cssText = 'overflow-x:auto;padding:0 0 60px 0;';
+
+      const tbl = document.createElement('table');
+      tbl.style.cssText = 'width:100%;border-collapse:collapse;font-size:12px;';
+
+      // Header
+      const thead = document.createElement('thead');
+      const hr = document.createElement('tr');
+      hr.style.cssText = 'position:sticky;top:0;background:var(--bg-card);z-index:5;';
+      IDEA_COLS.forEach(col => {
+        const th = document.createElement('th');
+        const isActive = ideasSortCol === col.key;
+        const arrow = isActive ? (ideasSortAsc ? ' ▲' : ' ▼') : '';
+        th.textContent = col.label + arrow;
+        th.style.cssText = `padding:7px 8px;text-align:left;font-size:11px;font-weight:700;color:${isActive?'var(--accent)':'var(--text-dim)'};border-bottom:1px solid var(--border);cursor:pointer;white-space:nowrap;width:${col.w};min-width:${col.w};`;
+        th.dataset.col = col.key;
+        th.addEventListener('click', () => {
+          if (ideasSortCol === col.key) ideasSortAsc = !ideasSortAsc;
+          else { ideasSortCol = col.key; ideasSortAsc = true; }
+          ideasRender();
+        });
+        hr.appendChild(th);
+      });
+      // Delete col header
+      const thDel = document.createElement('th');
+      thDel.style.cssText = 'padding:7px 4px;width:28px;min-width:28px;border-bottom:1px solid var(--border);';
+      hr.appendChild(thDel);
+      thead.appendChild(hr);
+      tbl.appendChild(thead);
+
+      // Body
+      const tbody = document.createElement('tbody');
+      sorted.forEach((row, ri) => {
+        const tr = document.createElement('tr');
+        tr.style.cssText = `border-bottom:1px solid var(--border);${ri%2===0?'':'background:rgba(255,255,255,0.02)'}`;
+        tr.dataset.id = row._id;
+
+        IDEA_COLS.forEach(col => {
+          const td = document.createElement('td');
+          td.style.cssText = `padding:5px 8px;vertical-align:top;max-width:${col.w};`;
+          const val = row[col.key] || '';
+          // Detect URL in concall field
+          if (col.key === 'concall' && val.startsWith('http')) {
+            const a = document.createElement('a');
+            a.href = val; a.textContent = 'Link'; a.target = '_blank';
+            a.style.cssText = 'color:var(--accent);font-size:11px;';
+            td.appendChild(a);
+            td.setAttribute('contenteditable', 'true');
+            td.addEventListener('blur', () => { ideasUpdateField(row._id, col.key, td.innerText.trim()); });
+          } else {
+            td.setAttribute('contenteditable', 'true');
+            td.innerText = val;
+            td.style.cssText += 'white-space:pre-wrap;word-break:break-word;outline:none;';
+            td.addEventListener('focus', () => { td.style.background = 'rgba(var(--accent-rgb,99,102,241),0.08)'; });
+            td.addEventListener('blur', () => {
+              td.style.background = '';
+              ideasUpdateField(row._id, col.key, td.innerText.trim());
+            });
+            td.addEventListener('keydown', e => { if (e.key==='Escape') { td.innerText = val; td.blur(); } });
+          }
+          tr.appendChild(td);
+        });
+
+        // Delete button
+        const tdDel = document.createElement('td');
+        tdDel.style.cssText = 'padding:5px 4px;text-align:center;vertical-align:top;';
+        const delBtn = document.createElement('button');
+        delBtn.textContent = '×';
+        delBtn.title = 'Delete row';
+        delBtn.style.cssText = 'background:none;border:none;color:var(--text-dim);cursor:pointer;font-size:14px;padding:0 4px;line-height:1;';
+        delBtn.addEventListener('click', () => {
+          if (!confirm('Delete "' + row.name + '"?')) return;
+          ideasData = ideasData.filter(r => r._id !== row._id);
+          ideasSave(ideasData);
+          ideasRender();
+        });
+        tdDel.appendChild(delBtn);
+        tr.appendChild(tdDel);
+        tbody.appendChild(tr);
+      });
+      tbl.appendChild(tbody);
+      wrap.appendChild(tbl);
+      container.appendChild(wrap);
+
+      // Add row button
+      document.getElementById('ideas-add-btn').addEventListener('click', () => {
+        const newId = Date.now();
+        ideasData.push({_id:newId, date:'', name:'', w52high:'', ped:'', notes:'', pe:'', ev_ebitda:'', concall:''});
+        ideasSave(ideasData);
+        ideasSortCol = 'date'; ideasSortAsc = false; // push to top after sort (empty date sorts last)
+        ideasRender();
+        // focus first cell of new row
+        const newRow = document.querySelector(`tr[data-id="${newId}"] td[contenteditable]`);
+        if (newRow) { newRow.focus(); }
+      });
+
+      document.getElementById('ideas-reset-btn').addEventListener('click', () => {
+        if (!confirm('Reset to original seed data? All your edits will be lost.')) return;
+        ideasData = IDEAS_SEED.map((r,i) => ({...r, _id: i}));
+        ideasSave(ideasData);
+        ideasRender();
+      });
+    }
+
+    function ideasUpdateField(id, key, val) {
+      const row = ideasData.find(r => r._id === id);
+      if (row) { row[key] = val; ideasSave(ideasData); }
+    }
+
+    ideasRender();
     columns = null; gridData = null;
 
   } else if (kind === 'qtrly') {
@@ -1599,7 +1914,7 @@ function mcapDesc(a, b) {
 // have no such grouping, so market cap descending is applied directly as the only sort key there.
 function sortRowsForDisplay(key, rows, kind) {
   if (kind === 'qtrly') return rows; // pre-sorted by PAT YoY desc in data
-  if (kind === 'filtered') return []; // filtered list builds its own rows internally
+  if (kind === 'filtered' || kind === 'ideas') return []; // these build their own content internally
   if (key === 'w52_breakout') {
     return [...rows].sort((a, b) => {
       const bi = BUCKET_SORT_ORDER.indexOf(a.bucket) - BUCKET_SORT_ORDER.indexOf(b.bucket);
@@ -1621,7 +1936,7 @@ screens.forEach((s, i) => {
   const rows = sortRowsForDisplay(s.key, DATA[s.key] || [], s.kind);
   const btn = document.createElement('button');
   btn.className = 'tab-btn' + (i===0 ? ' active' : '');
-  const displayCount = s.kind === 'filtered' ? (DATA.qtrly_history||[]).length : rows.length;
+  const displayCount = s.kind === 'filtered' ? (DATA.qtrly_history||[]).length : s.kind === 'ideas' ? '' : rows.length;
   btn.innerHTML = s.label + ' <span class="count">' + displayCount + '</span>';
   btn.onclick = () => selectTab(s.key);
   btn.dataset.key = s.key;
@@ -1632,7 +1947,7 @@ screens.forEach((s, i) => {
   panel.id = 'panel-' + s.key;
   panelsEl.appendChild(panel);
 
-  if (rows.length === 0 && s.kind !== 'filtered') {
+  if (rows.length === 0 && s.kind !== 'filtered' && s.kind !== 'ideas') {
     panel.innerHTML = '<div class="empty">No hits today for this screen.</div>';
     return;
   }
@@ -1687,7 +2002,7 @@ function selectTab(key) {
   document.querySelectorAll('.panel').forEach(p => p.classList.toggle('active', p.id === 'panel-' + key));
   // Restore scroll position for this tab (or go to top if first visit)
   requestAnimationFrame(() => window.scrollTo(0, (_loadScrollMap()[key] ?? 0)));
-  const isFiltered = (key === 'filtered_list');
+  const isFiltered = (key === 'filtered_list' || key === 'ideas_to_work');
   const ctrlBar = document.querySelector('.controls-bar');
   const watchlist = document.getElementById('starredWatchlist');
   if (ctrlBar) ctrlBar.style.display = isFiltered ? 'none' : '';
