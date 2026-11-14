@@ -1295,7 +1295,7 @@ function buildTableView(rows, kind) {
 
   } else if (kind === 'client_holdings') {
     // ---- Client Holdings — multi-client portfolio tracker ----
-    const CH_KEY = 'client_holdings_v4';
+    const CH_KEY = 'client_holdings_v6';
 
     // Seed data: computed from TradeDetailsAndSummary_N024487_2026_27_VINOD_BHATIA.csv
     // avg_cost = weighted average of all buy trades; shares = net open qty
@@ -1305,22 +1305,22 @@ function buildTableView(rows, kind) {
         name: 'Vinodji Bhatia',
         cash: 0,
         holdings: [
-          { sym: 'AEROFLEX',  name: 'Aeroflex Industries Ltd',      shares: 13150,  avg_cost: 310.58,   last_price: 0 },
-          { sym: 'CNL',       name: 'Creative Newtech Ltd',          shares: 2187,   avg_cost: 1057.33,  last_price: 0 },
-          { sym: 'GOLDIAM',   name: 'Goldiam International Ltd',     shares: 7261,   avg_cost: 267.90,   last_price: 0 },
-          { sym: 'HBLENGINE', name: 'HBL Power Systems Ltd',         shares: 2125,   avg_cost: 639.70,   last_price: 0 },
-          { sym: '506528',    name: 'Keltech Energies Ltd',          shares: 215,    avg_cost: 14692.29, last_price: 0 },
-          { sym: 'MANINDS',   name: 'Man Industries (India) Ltd',    shares: 4581,   avg_cost: 408.20,   last_price: 0 },
-          { sym: 'MUFIN',     name: 'Mufin Green Finance Ltd',       shares: 25988,  avg_cost: 136.34,   last_price: 0 },
-          { sym: 'NEOGEN',    name: 'Neogen Chemicals Ltd',          shares: 1001,   avg_cost: 2522.10,  last_price: 0 },
-          { sym: 'NRBBEARING',name: 'NRB Bearings Ltd',              shares: 11166,  avg_cost: 402.76,   last_price: 0 },
-          { sym: 'ONESOURCE', name: 'OneSource Specialty Pharma',    shares: 2050,   avg_cost: 1604.59,  last_price: 0 },
-          { sym: 'SAKAR',     name: 'Sakar Healthcare Ltd',          shares: 4566,   avg_cost: 645.08,   last_price: 0 },
-          { sym: 'SHAILY',    name: 'Shaily Engineering Plastics',   shares: 1602,   avg_cost: 1521.80,  last_price: 0 },
-          { sym: 'SBCL',      name: 'Shivalik Bimetal Controls',     shares: 6626,   avg_cost: 578.76,   last_price: 0 },
-          { sym: '506854',    name: 'Tanfac Industries Ltd',          shares: 156,    avg_cost: 2952.71,  last_price: 0 },
-          { sym: 'ZTECH',     name: 'Z-Tech (India) Ltd',             shares: 4800,   avg_cost: 571.29,   last_price: 0 },
-          { sym: 'LIQUIDCASE',name: 'Zerodha Liquid Case ETF',        shares: 150987, avg_cost: 116.45,   last_price: 0 },
+          { sym: 'AEROFLEX',  name: 'Aeroflex Industries Ltd',      shares: 13150,  avg_cost: 310.58,   last_price: 0, lots: [{"date":"19 Feb 2026","qty":6000,"rate":232.14,"amount":1392837.16},{"date":"23 Apr 2026","qty":1906,"rate":298.88,"amount":569657.33},{"date":"07 May 2026","qty":2126,"rate":376.0,"amount":799376.0},{"date":"11 May 2026","qty":1650,"rate":400.1,"amount":660165.0},{"date":"29 Jun 2026","qty":1468,"rate":451.0,"amount":662068.0}] },
+          { sym: 'CNL',       name: 'Creative Newtech Ltd',          shares: 2187,   avg_cost: 1057.33,  last_price: 0, lots: [{"date":"29 Jul 2026","qty":48,"rate":1000.1,"amount":48004.8},{"date":"31 Jul 2026","qty":280,"rate":990.0,"amount":277200.0},{"date":"04 Aug 2026","qty":404,"rate":990.0,"amount":399960.0},{"date":"05 Aug 2026","qty":697,"rate":1137.4,"amount":792768.95},{"date":"09 Sep 2026","qty":758,"rate":1150.0,"amount":871700.0}] },
+          { sym: 'GOLDIAM',   name: 'Goldiam International Ltd',     shares: 7261,   avg_cost: 267.90,   last_price: 0, lots: [{"date":"Pre-FY25-26","qty":7261,"rate":0,"amount":0}] },
+          { sym: 'HBLENGINE', name: 'HBL Power Systems Ltd',         shares: 2125,   avg_cost: 639.70,   last_price: 0, lots: [{"date":"Pre-FY25-26","qty":2125,"rate":0,"amount":0}] },
+          { sym: '506528',    name: 'Keltech Energies Ltd',          shares: 215,    avg_cost: 14692.29, last_price: 0, lots: [{"date":"Pre-FY25-26","qty":48,"rate":0,"amount":0},{"date":"20 Aug 2026","qty":112,"rate":14000.0,"amount":1568000.0},{"date":"21 Aug 2026","qty":55,"rate":13999.95,"amount":769997.25}] },
+          { sym: 'MANINDS',   name: 'Man Industries (India) Ltd',    shares: 4581,   avg_cost: 408.20,   last_price: 0, lots: [{"date":"Pre-FY25-26","qty":3204,"rate":0,"amount":0},{"date":"10 Feb 2026","qty":137,"rate":380.0,"amount":52060.0},{"date":"12 Aug 2026","qty":1240,"rate":609.05,"amount":755222.0}] },
+          { sym: 'MUFIN',     name: 'Mufin Green Finance Ltd',       shares: 25988,  avg_cost: 136.34,   last_price: 0, lots: [{"date":"01 Jul 2026","qty":25988,"rate":136.34,"amount":3543138.5}] },
+          { sym: 'NEOGEN',    name: 'Neogen Chemicals Ltd',          shares: 1001,   avg_cost: 2522.10,  last_price: 0, lots: [{"date":"12 Oct 2026","qty":657,"rate":2546.19,"amount":1672848.1},{"date":"13 Oct 2026","qty":344,"rate":2476.1,"amount":851778.4}] },
+          { sym: 'NRBBEARING',name: 'NRB Bearings Ltd',              shares: 11166,  avg_cost: 402.76,   last_price: 0, lots: [{"date":"20 May 2026","qty":2350,"rate":361.94,"amount":850550.0},{"date":"21 May 2026","qty":5468,"rate":361.62,"amount":1977350.8},{"date":"27 Aug 2026","qty":1708,"rate":474.95,"amount":811219.1},{"date":"22 Sep 2026","qty":1640,"rate":523.26,"amount":858151.05}] },
+          { sym: 'ONESOURCE', name: 'OneSource Specialty Pharma',    shares: 2050,   avg_cost: 1604.59,  last_price: 0, lots: [{"date":"Pre-FY25-26","qty":506,"rate":0,"amount":0},{"date":"02 Nov 2026","qty":1032,"rate":1583.17,"amount":1633829.4},{"date":"11 Nov 2026","qty":512,"rate":1601.9,"amount":820172.8}] },
+          { sym: 'SAKAR',     name: 'Sakar Healthcare Ltd',          shares: 4566,   avg_cost: 645.08,   last_price: 0, lots: [{"date":"14 May 2026","qty":2204,"rate":605.45,"amount":1334411.8},{"date":"15 May 2026","qty":1930,"rate":642.58,"amount":1240170.0},{"date":"03 Sep 2026","qty":432,"rate":1009.41,"amount":436065.75}] },
+          { sym: 'SHAILY',    name: 'Shaily Engineering Plastics',   shares: 1602,   avg_cost: 1521.80,  last_price: 0, lots: [{"date":"Pre-FY25-26","qty":1602,"rate":0,"amount":0}] },
+          { sym: 'SBCL',      name: 'Shivalik Bimetal Controls',     shares: 6626,   avg_cost: 578.76,   last_price: 0, lots: [{"date":"01 Apr 2026","qty":1660,"rate":411.13,"amount":682475.8},{"date":"23 Apr 2026","qty":1080,"rate":532.69,"amount":575306.9},{"date":"28 Apr 2026","qty":988,"rate":625.63,"amount":618119.2},{"date":"11 May 2026","qty":1106,"rate":601.0,"amount":664706.0},{"date":"20 May 2026","qty":1040,"rate":667.0,"amount":693680.0},{"date":"05 Nov 2026","qty":752,"rate":1024.9,"amount":770723.2}] },
+          { sym: '506854',    name: 'Tanfac Industries Ltd',          shares: 156,    avg_cost: 2952.71,  last_price: 0, lots: [{"date":"29 Jul 2026","qty":30,"rate":2945.82,"amount":88374.6},{"date":"05 Aug 2026","qty":126,"rate":3005.0,"amount":378630.0}] },
+          { sym: 'ZTECH',     name: 'Z-Tech (India) Ltd',             shares: 4800,   avg_cost: 571.29,   last_price: 0, lots: [{"date":"01 Jul 2026","qty":1500,"rate":625.0,"amount":937500.0},{"date":"09 Jul 2026","qty":300,"rate":590.1,"amount":177030.0},{"date":"10 Jul 2026","qty":600,"rate":590.1,"amount":354060.0},{"date":"13 Jul 2026","qty":900,"rate":590.1,"amount":531090.0},{"date":"19 Aug 2026","qty":1500,"rate":495.0,"amount":742500.0}] },
+          { sym: 'LIQUIDCASE',name: 'Zerodha Liquid Case ETF',        shares: 150987, avg_cost: 116.45,   last_price: 0, lots: [{"date":"16 Oct 2026","qty":150987,"rate":116.45,"amount":17582436.15}] },
         ],
         pending_trades: []
       }
@@ -1358,6 +1358,7 @@ function buildTableView(rows, kind) {
 
     let chActiveClient = chData.clients[0];
     let chSortCol = null, chSortDir = 1;
+    const chExpanded = new Set(); // tracks expanded holding syms
 
     const fmt2 = v => isNaN(v) ? '—' : Number(v).toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2});
     const fmtInt = v => isNaN(v) ? '—' : Math.round(v).toLocaleString('en-IN');
@@ -1440,23 +1441,19 @@ function buildTableView(rows, kind) {
       }
       sortedRows = [...sortedRows, ...pinnedRows];
 
-      // Main layout: two-column flex
-      const mainRow = document.createElement('div');
-      mainRow.style.cssText = 'display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap;';
-
-      // LEFT: Portfolio table
-      const leftDiv = document.createElement('div');
-      leftDiv.style.cssText = 'flex:1;min-width:600px;';
+      // Top section: header + chips + cash (full width)
+      const topSection = document.createElement('div');
+      topSection.style.cssText = 'margin-bottom:10px;';
 
       // Portfolio header
       const portHeader = document.createElement('div');
       portHeader.style.cssText = 'display:flex;align-items:baseline;gap:12px;margin-bottom:8px;';
       portHeader.innerHTML = `<span style="font-size:16px;font-weight:700;color:var(--text)">${client.name}</span><span style="font-size:12px;color:var(--text-dim)">${client.id}</span>`;
-      leftDiv.appendChild(portHeader);
+      topSection.appendChild(portHeader);
 
       // Summary chips
       const chips = document.createElement('div');
-      chips.style.cssText = 'display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px;';
+      chips.style.cssText = 'display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px;';
       const makeChip = (label, val, color) => {
         const c = document.createElement('div');
         c.style.cssText = `background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-size:12px;`;
@@ -1468,11 +1465,11 @@ function buildTableView(rows, kind) {
       chips.appendChild(makeChip('Total G/L', '₹' + fmtInt(totalGL) + ' (' + fmtPct(totalGLPct) + ')', totalGL >= 0 ? '#4ade80' : '#f87171'));
       chips.appendChild(makeChip('Cash', '₹' + fmtInt(cashVal)));
       chips.appendChild(makeChip('Grand Total', '₹' + fmtInt(grandTotal)));
-      leftDiv.appendChild(chips);
+      topSection.appendChild(chips);
 
       // Cash edit row
       const cashRow = document.createElement('div');
-      cashRow.style.cssText = 'display:flex;align-items:center;gap:8px;margin-bottom:10px;';
+      cashRow.style.cssText = 'display:flex;align-items:center;gap:8px;margin-bottom:8px;';
       cashRow.innerHTML = `<span style="font-size:12px;color:var(--text-dim)">Cash Balance (₹):</span>`;
       const cashInput = document.createElement('input');
       cashInput.type = 'number';
@@ -1481,20 +1478,29 @@ function buildTableView(rows, kind) {
       cashInput.onblur = () => { client.cash = parseFloat(cashInput.value) || 0; chSave(chData); chRender(); };
       cashInput.onkeydown = e => { if (e.key === 'Enter') cashInput.blur(); };
       cashRow.appendChild(cashInput);
-      leftDiv.appendChild(cashRow);
+      topSection.appendChild(cashRow);
+      chContainer.appendChild(topSection);
+
+      // Main layout: table + pending trades side by side
+      const mainRow = document.createElement('div');
+      mainRow.style.cssText = 'display:flex;gap:14px;align-items:flex-start;';
+
+      // LEFT: Portfolio table
+      const leftDiv = document.createElement('div');
+      leftDiv.style.cssText = 'flex:0 0 760px;';
 
       // Table
       const cols = [
-        { key: 'name',       label: 'Name',         align: 'left'  },
-        { key: 'last_price', label: 'Last Price',    align: 'right' },
-        { key: 'shares',     label: 'Shares',        align: 'right' },
-        { key: 'cost_basis', label: 'Cost Basis',    align: 'right' },
-        { key: 'avg_cost',   label: 'CB/Share',      align: 'right' },
-        { key: 'mkt_value',  label: 'Mkt Value',     align: 'right' },
-        { key: '_weight',    label: 'Weight%',       align: 'right' },
-        { key: '_gl',        label: 'Gain/Loss',     align: 'right' },
-        { key: '_glpct',     label: 'Change%',       align: 'right' },
-        { key: '_del',       label: '',              align: 'center' },
+        { key: 'name',       label: 'Name',         align: 'left',  width: '190px' },
+        { key: 'last_price', label: 'Last Price',   align: 'right', width: '72px'  },
+        { key: 'shares',     label: 'Shares',       align: 'right', width: '58px'  },
+        { key: 'cost_basis', label: 'Cost Basis',   align: 'right', width: '78px'  },
+        { key: 'avg_cost',   label: 'CB/Share',     align: 'right', width: '68px'  },
+        { key: 'mkt_value',  label: 'Mkt Value',    align: 'right', width: '78px'  },
+        { key: '_weight',    label: 'Wt%',          align: 'right', width: '44px'  },
+        { key: '_gl',        label: 'G/L',          align: 'right', width: '72px'  },
+        { key: '_glpct',     label: 'Chg%',         align: 'right', width: '52px'  },
+        { key: '_del',       label: '',             align: 'center', width: '24px' },
       ];
 
       const tableWrap = document.createElement('div');
@@ -1506,7 +1512,7 @@ function buildTableView(rows, kind) {
       const hrow = document.createElement('tr');
       cols.forEach(col => {
         const th = document.createElement('th');
-        th.style.cssText = `text-align:${col.align};padding:6px 8px;background:var(--bg-card);color:var(--text-dim);border-bottom:1px solid var(--border);white-space:nowrap;cursor:${col.key!=='_del'?'pointer':'default'};user-select:none;`;
+        th.style.cssText = `text-align:${col.align};padding:4px 6px;background:var(--bg-card);color:var(--text-dim);border-bottom:1px solid var(--border);white-space:nowrap;cursor:${col.key!=='_del'?'pointer':'default'};user-select:none;width:${col.width||'auto'};max-width:${col.width||'auto'};overflow:hidden;`;
         if (col.key !== '_del') {
           const sortIndicator = chSortCol === col.key ? (chSortDir === 1 ? ' ▲' : ' ▼') : '';
           th.textContent = col.label + sortIndicator;
@@ -1538,7 +1544,7 @@ function buildTableView(rows, kind) {
 
         cols.forEach(col => {
           const td = document.createElement('td');
-          td.style.cssText = `text-align:${col.align};padding:5px 8px;border-bottom:1px solid var(--border);`;
+          td.style.cssText = `text-align:${col.align};padding:4px 6px;border-bottom:1px solid var(--border);width:${col.width||'auto'};max-width:${col.width||'auto'};overflow:hidden;white-space:nowrap;`;
 
           if (col.key === '_del') {
             td.innerHTML = '<button style="background:none;border:none;color:var(--text-dim);cursor:pointer;font-size:14px;" title="Delete">✕</button>';
@@ -1582,13 +1588,51 @@ function buildTableView(rows, kind) {
             };
             td.onkeydown = e => { if (e.key === 'Enter') { e.preventDefault(); td.blur(); } };
           } else if (col.key === 'name') {
-            td.contentEditable = 'true';
-            td.style.outline = 'none';
-            td.textContent = h.name;
-            td.onblur = () => {
-              const orig = client.holdings.find(x => x.sym === h.sym);
-              if (orig) { orig.name = td.textContent.trim() || h.sym; chSave(chData); }
+            // Keep TD as table-cell; use inline-block children to avoid row height disruption
+            const origH = client.holdings.find(x => x.sym === h.sym);
+            const hasLots = origH && origH.lots && origH.lots.length > 0;
+            const lots = (origH && origH.lots) || [];
+
+            // Green dot: oldest lot date > 365 days ago
+            const today365 = new Date();
+            const parseD = s => { const d = new Date(s); return isNaN(d) ? null : d; };
+            const oldestLot = lots.reduce((oldest, l) => {
+              const d = parseD(l.date);
+              return (d && (!oldest || d < oldest)) ? d : oldest;
+            }, null);
+            const isOver365 = oldestLot && (today365 - oldestLot) / 86400000 > 365;
+
+            // + toggle button
+            if (hasLots) {
+              const expBtn = document.createElement('button');
+              expBtn.textContent = chExpanded.has(h.sym) ? '−' : '+';
+              expBtn.title = 'Show purchase history';
+              expBtn.style.cssText = 'vertical-align:middle;width:14px;height:14px;border-radius:2px;border:1px solid var(--border);background:var(--btn-bg);color:var(--accent);cursor:pointer;font-size:10px;font-weight:700;line-height:1;padding:0;margin-right:4px;display:inline-flex;align-items:center;justify-content:center;';
+              expBtn.onclick = (e) => {
+                e.stopPropagation();
+                if (chExpanded.has(h.sym)) chExpanded.delete(h.sym);
+                else chExpanded.add(h.sym);
+                chRender();
+              };
+              td.appendChild(expBtn);
+            }
+
+            // Green dot if held > 365 days
+            if (isOver365) {
+              const dot = document.createElement('span');
+              dot.title = `Held since ${oldestLot.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'})} (${Math.floor((today365-oldestLot)/86400000)}d)`;
+              dot.style.cssText = 'display:inline-block;vertical-align:middle;width:7px;height:7px;border-radius:50%;background:#4ade80;margin-right:5px;flex-shrink:0;';
+              td.appendChild(dot);
+            }
+
+            const nameSpan = document.createElement('span');
+            nameSpan.contentEditable = 'true';
+            nameSpan.style.cssText = 'outline:none;vertical-align:middle;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;';
+            nameSpan.textContent = h.name;
+            nameSpan.onblur = () => {
+              if (origH) { origH.name = nameSpan.textContent.trim() || h.sym; chSave(chData); }
             };
+            td.appendChild(nameSpan);
           } else if (col.key === 'shares') {
             td.contentEditable = 'true';
             td.style.outline = 'none';
@@ -1619,6 +1663,94 @@ function buildTableView(rows, kind) {
           tr.appendChild(td);
         });
         tbody.appendChild(tr);
+
+        // Expansion row: purchase history breakdown
+        if (chExpanded.has(h.sym)) {
+          const origH = client.holdings.find(x => x.sym === h.sym);
+          const lots = (origH && origH.lots) || [];
+          const expTr = document.createElement('tr');
+          expTr.style.background = 'var(--accent-soft-bg)';
+          const expTd = document.createElement('td');
+          expTd.colSpan = cols.length;
+          expTd.style.cssText = 'padding:8px 12px 12px 28px;border-bottom:1px solid var(--border);';
+
+          const today = new Date();
+          const parseDate = s => {
+            if (!s) return null;
+            // Try formats: "19 Feb 2026", "2026-02-19"
+            const d = new Date(s);
+            return isNaN(d) ? null : d;
+          };
+
+          const lotHdr = document.createElement('div');
+          lotHdr.style.cssText = 'font-size:11px;font-weight:700;color:var(--text-dim);margin-bottom:6px;';
+          lotHdr.textContent = `Purchase History — ${h.name} (${h.sym}) · ${lots.length} lot${lots.length!==1?'s':''}`;
+          expTd.appendChild(lotHdr);
+
+          const lotTbl = document.createElement('table');
+          lotTbl.style.cssText = 'border-collapse:collapse;font-size:11.5px;';
+          const lotCols = ['Date','Qty','Price / Share','Total Value','Days Since'];
+          const lotHead = document.createElement('thead');
+          const lotHRow = document.createElement('tr');
+          lotCols.forEach(c => {
+            const th = document.createElement('th');
+            th.style.cssText = 'padding:3px 10px 3px 0;text-align:right;color:var(--text-dim);font-weight:600;white-space:nowrap;border-bottom:1px solid var(--border);';
+            if (c === 'Date') th.style.textAlign = 'left';
+            th.textContent = c;
+            lotHRow.appendChild(th);
+          });
+          lotHead.appendChild(lotHRow);
+          lotTbl.appendChild(lotHead);
+
+          const lotBody = document.createElement('tbody');
+          let totalLotQty = 0, totalLotAmt = 0;
+          lots.forEach((lot, li) => {
+            const isPreCSV = lot.date === 'Pre-FY25-26';
+            const dParsed = isPreCSV ? null : parseDate(lot.date);
+            const days = dParsed ? Math.floor((today - dParsed) / 86400000) : '—';
+            totalLotQty += lot.qty;
+            if (!isPreCSV) totalLotAmt += lot.amount;
+            const lr = document.createElement('tr');
+            lr.style.background = li % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.03)';
+            if (isPreCSV) lr.style.color = 'var(--text-dim)';
+            const vals = [
+              { v: isPreCSV ? 'Before FY25-26 (cost unknown)' : lot.date, left: true },
+              { v: fmtInt(lot.qty) },
+              { v: isPreCSV ? '—' : '₹' + fmt2(lot.rate) },
+              { v: isPreCSV ? '—' : '₹' + fmtInt(lot.amount) },
+              { v: isPreCSV ? '365d+' : (typeof days === 'number' ? days + 'd' : days) },
+            ];
+            vals.forEach(cell => {
+              const td2 = document.createElement('td');
+              td2.style.cssText = `padding:3px 10px 3px 0;text-align:${cell.left ? 'left' : 'right'};white-space:nowrap;${isPreCSV ? 'font-style:italic;' : ''}`;
+              td2.textContent = cell.v;
+              lr.appendChild(td2);
+            });
+            lotBody.appendChild(lr);
+          });
+          // Totals row
+          const lotTotalTr = document.createElement('tr');
+          lotTotalTr.style.cssText = 'font-weight:700;border-top:1px solid var(--border);';
+          [{ v:'Total', left:true },{ v:fmtInt(totalLotQty) },{ v:'' },{ v:'₹'+fmtInt(totalLotAmt) },{ v:'' }].forEach(cell => {
+            const td2 = document.createElement('td');
+            td2.style.cssText = `padding:3px 10px 3px 0;text-align:${cell.left?'left':'right'};color:var(--text);`;
+            td2.textContent = cell.v;
+            lotTotalTr.appendChild(td2);
+          });
+          lotBody.appendChild(lotTotalTr);
+          lotTbl.appendChild(lotBody);
+          expTd.appendChild(lotTbl);
+
+          if (lots.length === 0) {
+            expTd.appendChild(Object.assign(document.createElement('div'), {
+              textContent: 'No purchase history available. Add lots via trade CSV import.',
+              style: { cssText: 'color:var(--text-dim);font-style:italic;font-size:12px;' }
+            }));
+          }
+
+          expTr.appendChild(expTd);
+          tbody.appendChild(expTr);
+        }
       });
 
       // Cash row
@@ -1674,7 +1806,7 @@ function buildTableView(rows, kind) {
 
       // RIGHT: Pending Trades table
       const rightDiv = document.createElement('div');
-      rightDiv.style.cssText = 'min-width:340px;max-width:420px;flex-shrink:0;';
+      rightDiv.style.cssText = 'flex:0 0 280px;';
 
       const ptHeader = document.createElement('div');
       ptHeader.style.cssText = 'font-size:14px;font-weight:700;color:var(--text);margin-bottom:8px;';
