@@ -1295,7 +1295,7 @@ function buildTableView(rows, kind) {
 
   } else if (kind === 'client_holdings') {
     // ---- Client Holdings — multi-client portfolio tracker ----
-    const CH_KEY = 'client_holdings_v6';
+    const CH_KEY = 'client_holdings_v7';
 
     // Seed data: computed from TradeDetailsAndSummary_N024487_2026_27_VINOD_BHATIA.csv
     // avg_cost = weighted average of all buy trades; shares = net open qty
@@ -1306,13 +1306,13 @@ function buildTableView(rows, kind) {
         cash: 0,
         holdings: [
           { sym: 'AEROFLEX',  name: 'Aeroflex Industries Ltd',      shares: 13150,  avg_cost: 310.58,   last_price: 0, lots: [{"date":"19 Feb 2026","qty":6000,"rate":232.14,"amount":1392837.16},{"date":"23 Apr 2026","qty":1906,"rate":298.88,"amount":569657.33},{"date":"07 May 2026","qty":2126,"rate":376.0,"amount":799376.0},{"date":"11 May 2026","qty":1650,"rate":400.1,"amount":660165.0},{"date":"29 Jun 2026","qty":1468,"rate":451.0,"amount":662068.0}] },
-          { sym: 'CNL',       name: 'Creative Newtech Ltd',          shares: 2187,   avg_cost: 1057.33,  last_price: 0, lots: [{"date":"29 Jul 2026","qty":48,"rate":1000.1,"amount":48004.8},{"date":"31 Jul 2026","qty":280,"rate":990.0,"amount":277200.0},{"date":"04 Aug 2026","qty":404,"rate":990.0,"amount":399960.0},{"date":"05 Aug 2026","qty":697,"rate":1137.4,"amount":792768.95},{"date":"09 Sep 2026","qty":758,"rate":1150.0,"amount":871700.0}] },
+          { sym: 'CNL',       name: 'Creative Newtech Ltd',          shares: 2777,   avg_cost: 1108.67,  last_price: 0, lots: [{"date":"29 Jul 2026","qty":48,"rate":1000.1,"amount":48004.8},{"date":"31 Jul 2026","qty":280,"rate":990.0,"amount":277200.0},{"date":"04 Aug 2026","qty":404,"rate":990.0,"amount":399960.0},{"date":"05 Aug 2026","qty":697,"rate":1137.4,"amount":792768.95},{"date":"09 Sep 2026","qty":758,"rate":1150.0,"amount":871700.0},{"date":"16 Nov 2026","qty":590,"rate":1415.90,"amount":835383.82}] },
           { sym: 'GOLDIAM',   name: 'Goldiam International Ltd',     shares: 7261,   avg_cost: 267.90,   last_price: 0, lots: [{"date":"Pre-FY25-26","qty":7261,"rate":0,"amount":0}] },
           { sym: 'HBLENGINE', name: 'HBL Power Systems Ltd',         shares: 2125,   avg_cost: 639.70,   last_price: 0, lots: [{"date":"Pre-FY25-26","qty":2125,"rate":0,"amount":0}] },
           { sym: '506528',    name: 'Keltech Energies Ltd',          shares: 215,    avg_cost: 14692.29, last_price: 0, lots: [{"date":"Pre-FY25-26","qty":48,"rate":0,"amount":0},{"date":"20 Aug 2026","qty":112,"rate":14000.0,"amount":1568000.0},{"date":"21 Aug 2026","qty":55,"rate":13999.95,"amount":769997.25}] },
           { sym: 'MANINDS',   name: 'Man Industries (India) Ltd',    shares: 4581,   avg_cost: 408.20,   last_price: 0, lots: [{"date":"Pre-FY25-26","qty":3204,"rate":0,"amount":0},{"date":"10 Feb 2026","qty":137,"rate":380.0,"amount":52060.0},{"date":"12 Aug 2026","qty":1240,"rate":609.05,"amount":755222.0}] },
           { sym: 'MUFIN',     name: 'Mufin Green Finance Ltd',       shares: 25988,  avg_cost: 136.34,   last_price: 0, lots: [{"date":"01 Jul 2026","qty":25988,"rate":136.34,"amount":3543138.5}] },
-          { sym: 'NEOGEN',    name: 'Neogen Chemicals Ltd',          shares: 1001,   avg_cost: 2522.10,  last_price: 0, lots: [{"date":"12 Oct 2026","qty":657,"rate":2546.19,"amount":1672848.1},{"date":"13 Oct 2026","qty":344,"rate":2476.1,"amount":851778.4}] },
+          { sym: 'NEOGEN',    name: 'Neogen Chemicals Ltd',          shares: 1309,   avg_cost: 2566.66,  last_price: 0, lots: [{"date":"12 Oct 2026","qty":657,"rate":2546.19,"amount":1672848.1},{"date":"13 Oct 2026","qty":344,"rate":2476.1,"amount":851778.4},{"date":"16 Nov 2026","qty":308,"rate":2711.48,"amount":835137.16}] },
           { sym: 'NRBBEARING',name: 'NRB Bearings Ltd',              shares: 11166,  avg_cost: 402.76,   last_price: 0, lots: [{"date":"20 May 2026","qty":2350,"rate":361.94,"amount":850550.0},{"date":"21 May 2026","qty":5468,"rate":361.62,"amount":1977350.8},{"date":"27 Aug 2026","qty":1708,"rate":474.95,"amount":811219.1},{"date":"22 Sep 2026","qty":1640,"rate":523.26,"amount":858151.05}] },
           { sym: 'ONESOURCE', name: 'OneSource Specialty Pharma',    shares: 2050,   avg_cost: 1604.59,  last_price: 0, lots: [{"date":"Pre-FY25-26","qty":506,"rate":0,"amount":0},{"date":"02 Nov 2026","qty":1032,"rate":1583.17,"amount":1633829.4},{"date":"11 Nov 2026","qty":512,"rate":1601.9,"amount":820172.8}] },
           { sym: 'SAKAR',     name: 'Sakar Healthcare Ltd',          shares: 4566,   avg_cost: 645.08,   last_price: 0, lots: [{"date":"14 May 2026","qty":2204,"rate":605.45,"amount":1334411.8},{"date":"15 May 2026","qty":1930,"rate":642.58,"amount":1240170.0},{"date":"03 Sep 2026","qty":432,"rate":1009.41,"amount":436065.75}] },
