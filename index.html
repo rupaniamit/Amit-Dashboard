@@ -1295,7 +1295,7 @@ function buildTableView(rows, kind) {
 
   } else if (kind === 'client_holdings') {
     // ---- Client Holdings — multi-client portfolio tracker ----
-    const CH_KEY = 'client_holdings_v10';
+    const CH_KEY = 'client_holdings_v12';
 
     // Seed data: computed from TradeDetailsAndSummary_N024487_2026_27_VINOD_BHATIA.csv
     // avg_cost = weighted average of all buy trades; shares = net open qty
@@ -1357,7 +1357,7 @@ function buildTableView(rows, kind) {
     });
 
     let chActiveClient = chData.clients[0];
-    let chSortCol = null, chSortDir = 1;
+    let chSortCol = '_weight', chSortDir = -1;
     const chExpanded = new Set(); // tracks expanded holding syms
 
     const fmt2 = v => isNaN(v) ? '—' : Number(v).toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2});
@@ -1716,8 +1716,8 @@ function buildTableView(rows, kind) {
             const vals = [
               { v: isPreCSV ? 'Before FY25-26 (cost unknown)' : lot.date, left: true },
               { v: fmtInt(lot.qty) },
-              { v: isPreCSV ? '—' : '₹' + fmt2(lot.rate) },
-              { v: isPreCSV ? '—' : '₹' + fmtInt(lot.amount) },
+              { v: isPreCSV ? '—' : (lot.rate === 0 && lot.amount === 0 ? 'Bonus Issue' : '₹' + fmt2(lot.rate)) },
+              { v: isPreCSV ? '—' : (lot.rate === 0 && lot.amount === 0 ? '—' : '₹' + fmtInt(lot.amount)) },
               { v: isPreCSV ? '365d+' : (typeof days === 'number' ? days + 'd' : days) },
             ];
             vals.forEach(cell => {
