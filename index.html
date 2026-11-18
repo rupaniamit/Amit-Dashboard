@@ -624,6 +624,7 @@ const screens = [
   { key: 'filtered_list', label: 'Earnings Filtered List', kind: 'filtered', chartToggle: false },
   { key: 'ideas_to_work', label: 'Filtered Ideas to Work', kind: 'ideas', chartToggle: false },
   { key: 'client_holdings', label: 'Client Holdings', kind: 'client_holdings', chartToggle: false },
+  { key: 'concalls_read', label: 'Con-calls Read', kind: 'concalls_read', chartToggle: false },
 ];
 
 const tabsEl = document.getElementById('tabs');
@@ -2260,6 +2261,148 @@ function buildTableView(rows, kind) {
     })();
 
     columns = null; gridData = null; // skip the gridjs block below
+
+  } else if (kind === 'concalls_read') {
+    // ---- Con-calls Read — localStorage-backed editable table ----
+    const panel = div; // 'div' is the container created at top of buildTableView
+    const CC_KEY = 'concalls_read_v1';
+    const CC_SEED = [];
+
+    function ccLoad() {
+      try { return JSON.parse(localStorage.getItem(CC_KEY)) || CC_SEED.map(r => ({...r})); }
+      catch(e) { return CC_SEED.map(r => ({...r})); }
+    }
+    function ccSave(data) {
+      try { localStorage.setItem(CC_KEY, JSON.stringify(data)); } catch(e) {}
+    }
+
+    let ccData = ccLoad();
+    if (!ccData.length) ccData = CC_SEED.map(r => ({...r}));
+
+    function ccRender() {
+      panel.innerHTML = '';
+
+      // Header bar
+      const hdr = document.createElement('div');
+      hdr.style.cssText = 'display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap;';
+      const title = document.createElement('span');
+      title.style.cssText = 'color:var(--text);font-size:14px;font-weight:600;';
+      title.textContent = 'Con-calls Read';
+      const addBtn = document.createElement('button');
+      addBtn.textContent = '+ Add Row';
+      addBtn.style.cssText = 'background:var(--accent);color:#fff;border:none;border-radius:4px;padding:5px 12px;cursor:pointer;font-size:12px;';
+      addBtn.onclick = () => {
+        ccData.push({ name: '', q2fy27: '', q3fy27: '', q4fy27: '' });
+        ccSave(ccData);
+        ccRender();
+        // focus first cell of new row
+        setTimeout(() => {
+          const cells = panel.querySelectorAll('td[contenteditable]');
+          if (cells.length) cells[cells.length - 4].focus();
+        }, 50);
+      };
+      const clearBtn = document.createElement('button');
+      clearBtn.textContent = 'Clear All';
+      clearBtn.style.cssText = 'background:transparent;color:var(--text-dim);border:1px solid var(--border);border-radius:4px;padding:5px 12px;cursor:pointer;font-size:12px;';
+      clearBtn.onclick = () => {
+        if (confirm('Clear all con-calls data?')) { ccData = []; ccSave(ccData); ccRender(); }
+      };
+      hdr.append(title, addBtn, clearBtn);
+      panel.appendChild(hdr);
+
+      // Table
+      const wrap = document.createElement('div');
+      wrap.style.cssText = 'overflow-x:auto;';
+      const tbl = document.createElement('table');
+      tbl.style.cssText = 'width:100%;border-collapse:collapse;font-size:13px;';
+
+      // thead
+      const thead = document.createElement('thead');
+      const hrow = document.createElement('tr');
+      const cols = [
+        { label: 'Company Name', key: 'name', width: '220px' },
+        { label: 'Q2FY27', key: 'q2fy27', width: '220px' },
+        { label: 'Q3FY27', key: 'q3fy27', width: '220px' },
+        { label: 'Q4FY27', key: 'q4fy27', width: '220px' },
+        { label: '', key: '_del', width: '36px' },
+      ];
+      cols.forEach(c => {
+        const th = document.createElement('th');
+        th.textContent = c.label;
+        th.style.cssText = `width:${c.width};padding:7px 10px;text-align:left;background:var(--panel-bg);color:var(--text-dim);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;border-bottom:2px solid var(--border);position:sticky;top:0;z-index:2;`;
+        hrow.appendChild(th);
+      });
+      thead.appendChild(hrow);
+      tbl.appendChild(thead);
+
+      // tbody
+      const tbody = document.createElement('tbody');
+      ccData.forEach((row, ri) => {
+        const tr = document.createElement('tr');
+        tr.style.cssText = 'border-bottom:1px solid var(--border);';
+        tr.onmouseenter = () => tr.style.background = 'var(--row-hover, rgba(255,255,255,0.03))';
+        tr.onmouseleave = () => tr.style.background = '';
+
+        ['name','q2fy27','q3fy27','q4fy27'].forEach(key => {
+          const td = document.createElement('td');
+          td.contentEditable = 'true';
+          td.textContent = row[key] || '';
+          td.style.cssText = 'padding:6px 10px;color:var(--text);vertical-align:top;min-width:140px;outline:none;white-space:pre-wrap;word-break:break-word;';
+          td.onblur = () => {
+            const val = td.textContent.trim();
+            if (ccData[ri]) { ccData[ri][key] = val; ccSave(ccData); }
+          };
+          td.onkeydown = e => {
+            if (e.key === 'Tab') {
+              e.preventDefault();
+              const allCells = [...panel.querySelectorAll('td[contenteditable]')];
+              const idx = allCells.indexOf(td);
+              const next = allCells[idx + (e.shiftKey ? -1 : 1)];
+              if (next) next.focus();
+            }
+          };
+          tr.appendChild(td);
+        });
+
+        // delete button
+        const delTd = document.createElement('td');
+        delTd.style.cssText = 'padding:4px 6px;text-align:center;vertical-align:top;';
+        const delBtn = document.createElement('button');
+        delBtn.textContent = '✕';
+        delBtn.title = 'Delete row';
+        delBtn.style.cssText = 'background:transparent;border:none;color:var(--text-dim);cursor:pointer;font-size:13px;padding:2px 4px;border-radius:3px;';
+        delBtn.onmouseenter = () => delBtn.style.color = '#ff6666';
+        delBtn.onmouseleave = () => delBtn.style.color = 'var(--text-dim)';
+        delBtn.onclick = () => {
+          ccData.splice(ri, 1);
+          ccSave(ccData);
+          ccRender();
+        };
+        delTd.appendChild(delBtn);
+        tr.appendChild(delTd);
+
+        tbody.appendChild(tr);
+      });
+
+      // empty state
+      if (!ccData.length) {
+        const etr = document.createElement('tr');
+        const etd = document.createElement('td');
+        etd.colSpan = 5;
+        etd.style.cssText = 'padding:30px;text-align:center;color:var(--text-dim);font-style:italic;';
+        etd.textContent = 'No entries yet — click "+ Add Row" to get started.';
+        etr.appendChild(etd);
+        tbody.appendChild(etr);
+      }
+
+      tbl.appendChild(tbody);
+      wrap.appendChild(tbl);
+      panel.appendChild(wrap);
+    }
+
+    ccRender();
+    columns = null; gridData = null;
+
   } else {
     const FLAG_BASE_COLS = ['★','Symbol','Status','Gain %','Pole (days)','Pole Window','Pullback %','Chg %','Price','Mcap (Cr)','P/E','EV/EBITDA','ROE %','ROCE %','D/E','Sector', { ...SCREENER_COL }];
     const FLAG_IS_NEW_COL_IDX = FLAG_BASE_COLS.length;
@@ -2549,7 +2692,7 @@ function mcapDesc(a, b) {
 // have no such grouping, so market cap descending is applied directly as the only sort key there.
 function sortRowsForDisplay(key, rows, kind) {
   if (kind === 'qtrly') return rows; // pre-sorted by PAT YoY desc in data
-  if (kind === 'filtered' || kind === 'ideas' || kind === 'client_holdings') return []; // these build their own content internally
+  if (kind === 'filtered' || kind === 'ideas' || kind === 'client_holdings' || kind === 'concalls_read') return []; // these build their own content internally
   if (key === 'w52_breakout') {
     return [...rows].sort((a, b) => {
       const bi = BUCKET_SORT_ORDER.indexOf(a.bucket) - BUCKET_SORT_ORDER.indexOf(b.bucket);
@@ -2571,7 +2714,7 @@ screens.forEach((s, i) => {
   const rows = sortRowsForDisplay(s.key, DATA[s.key] || [], s.kind);
   const btn = document.createElement('button');
   btn.className = 'tab-btn' + (i===0 ? ' active' : '');
-  const displayCount = s.kind === 'filtered' ? (DATA.qtrly_history||[]).length : (s.kind === 'ideas' || s.kind === 'client_holdings') ? '' : rows.length;
+  const displayCount = s.kind === 'filtered' ? (DATA.qtrly_history||[]).length : (s.kind === 'ideas' || s.kind === 'client_holdings' || s.kind === 'concalls_read') ? '' : rows.length;
   btn.innerHTML = s.label + ' <span class="count">' + displayCount + '</span>';
   btn.onclick = () => selectTab(s.key);
   btn.dataset.key = s.key;
@@ -2582,7 +2725,7 @@ screens.forEach((s, i) => {
   panel.id = 'panel-' + s.key;
   panelsEl.appendChild(panel);
 
-  if (rows.length === 0 && s.kind !== 'filtered' && s.kind !== 'ideas' && s.kind !== 'client_holdings') {
+  if (rows.length === 0 && s.kind !== 'filtered' && s.kind !== 'ideas' && s.kind !== 'client_holdings' && s.kind !== 'concalls_read') {
     panel.innerHTML = '<div class="empty">No hits today for this screen.</div>';
     return;
   }
@@ -2637,7 +2780,7 @@ function selectTab(key) {
   document.querySelectorAll('.panel').forEach(p => p.classList.toggle('active', p.id === 'panel-' + key));
   // Restore scroll position for this tab (or go to top if first visit)
   requestAnimationFrame(() => window.scrollTo(0, (_loadScrollMap()[key] ?? 0)));
-  const isFiltered = (key === 'filtered_list' || key === 'ideas_to_work' || key === 'client_holdings');
+  const isFiltered = (key === 'filtered_list' || key === 'ideas_to_work' || key === 'client_holdings' || key === 'concalls_read');
   const ctrlBar = document.querySelector('.controls-bar');
   const watchlist = document.getElementById('starredWatchlist');
   if (ctrlBar) ctrlBar.style.display = isFiltered ? 'none' : '';
