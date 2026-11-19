@@ -703,8 +703,6 @@ function buildTableView(rows, kind) {
       Object.values(m).forEach(v => { if (v.quarter && /^Q\dFY\d{2}$/.test(v.quarter)) { v.quarter = v.quarter.replace(/FY(\d{2})$/, (_,y)=>'FY20'+y); changed = true; } });
       if (changed) localStorage.setItem('qtrly_starred_v2', JSON.stringify(m));
     } catch(e){} })();
-    const flStarredMap = (() => { try { return JSON.parse(localStorage.getItem('qtrly_starred_v2')||'{}'); } catch(e){return {};} })();
-    const flStarredSet = new Set(Object.keys(flStarredMap));
     const flHistory = DATA.qtrly_history || [];
     const qResults  = DATA.qtrly_results || [];
 
@@ -718,30 +716,35 @@ function buildTableView(rows, kind) {
     const qYoYF  = v => v==null ? '—' : Math.abs(v)>9999?(v>0?'>9999%':'<-9999%'):Number(v).toFixed(1)+'%';
     const fmtMcap = v => { if (v==null) return '—'; v=Number(v); return v>=100000?(v/100000).toFixed(1)+'L Cr':Math.round(v).toLocaleString()+' Cr'; };
 
-    // Build starred rows from current quarter results
+    // Build starred rows — re-reads localStorage each call so stars added after page load appear immediately
     function round1fl(v) { return Math.round(v*10)/10; }
-    const starredRows = [...flStarredSet].map(sym => {
-      const r   = qResults.find(x => x.sym === sym);
-      const meta = flStarredMap[sym] || {};
-      const curM = liveMcap[sym] ?? null;
-      const atM  = meta.mcap ?? (r ? r.mcap : null);
-      const move = (curM && atM && atM!==0) ? round1fl((curM-atM)/atM*100) : null;
-      return {
-        date: meta.date || '', quarter: meta.quarter || 'Q2FY2027',
-        name: r ? r.name : sym, sym,
-        sector: r ? (r.industry||'') : '',
-        mcap: atM, cur_mcap: curM, move,
-        sales_yoy: r ? r.sales_yoy : null, ebitda_yoy: r ? r.op_yoy : null,
-        np_yoy: r ? r.np_yoy : null, pe: r ? r.pe : null, ev_ebitda: r ? r.ev_ebitda : null,
-        notes: '', concall: '', isCurrentQ: true,
-      };
-    });
+    function flBuildStarredRows() {
+      const map = (() => { try { return JSON.parse(localStorage.getItem('qtrly_starred_v2')||'{}'); } catch(e){return {};} })();
+      return Object.keys(map).map(sym => {
+        const r   = qResults.find(x => x.sym === sym);
+        const meta = map[sym] || {};
+        const curM = liveMcap[sym] ?? null;
+        const atM  = meta.mcap ?? (r ? r.mcap : null);
+        const move = (curM && atM && atM!==0) ? round1fl((curM-atM)/atM*100) : null;
+        return {
+          date: meta.date || '', quarter: meta.quarter || 'Q2FY2027',
+          name: r ? r.name : sym, sym,
+          sector: r ? (r.industry||'') : '',
+          mcap: atM, cur_mcap: curM, move,
+          sales_yoy: r ? r.sales_yoy : null, ebitda_yoy: r ? r.op_yoy : null,
+          np_yoy: r ? r.np_yoy : null, pe: r ? r.pe : null, ev_ebitda: r ? r.ev_ebitda : null,
+          notes: '', concall: '', isCurrentQ: true,
+        };
+      });
+    }
 
-    // Combined: starred first, then history
-    const flAllRows = [
-      ...starredRows,
-      ...flHistory.map(r => ({...r, sym: '', isCurrentQ: false})),
-    ];
+    // Combined: starred (live from localStorage) + history
+    function flGetAllRows() {
+      return [
+        ...flBuildStarredRows(),
+        ...flHistory.map(r => ({...r, sym: '', isCurrentQ: false})),
+      ];
+    }
 
     // Sort state
     let flSortCol = null, flSortAsc = true, flSearchQ = '';
@@ -791,7 +794,7 @@ function buildTableView(rows, kind) {
 
     function flSortedRows() {
       const deleted = flGetDeleted();
-      let rows = flAllRows.filter(r => {
+      let rows = flGetAllRows().filter(r => {
         const k = r.isCurrentQ ? ('fl_del_star|'+r.sym) : ('fl_del|'+r.name+'|'+r.quarter);
         return !deleted.has(k);
       });
@@ -854,8 +857,8 @@ function buildTableView(rows, kind) {
     const btnStyle = 'padding:5px 11px;font-size:11px;font-weight:600;border-radius:5px;border:1px solid var(--border);cursor:pointer;background:var(--card-bg);color:var(--text);';
     flWrap.innerHTML = `
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap;">
-        <span id="fl-count" style="font-size:12px;color:var(--text-dim);">${flAllRows.length} entries</span>
-        <span style="font-size:11px;color:var(--text-dim);">(${starredRows.length} starred ★ · ${flHistory.length} from history)</span>
+        <span id="fl-count" style="font-size:12px;color:var(--text-dim);">${flGetAllRows().length} entries</span>
+        <span style="font-size:11px;color:var(--text-dim);">(${flBuildStarredRows().length} starred ★ · ${flHistory.length} from history)</span>
         <button id="fl-export-csv" style="${btnStyle}">⬇ CSV</button>
         <button id="fl-export-xls" style="${btnStyle}">⬇ XLS</button>
         <input id="fl-search" type="text" placeholder="Search name / quarter / sector / notes…"
@@ -873,7 +876,8 @@ function buildTableView(rows, kind) {
     function flRender() {
       const rows = flSortedRows();
       flWrap.querySelector('#fl-tbody').innerHTML = flBuildRows(rows);
-      flWrap.querySelector('#fl-count').textContent = rows.length + (rows.length < flAllRows.length ? ' of ' + flAllRows.length : '') + ' entries';
+      const _allLen = flGetAllRows().length;
+      flWrap.querySelector('#fl-count').textContent = rows.length + (rows.length < _allLen ? ' of ' + _allLen : '') + ' entries';
       // Update sort arrows
       flWrap.querySelectorAll('.fl-arr').forEach(el => {
         const k = el.dataset.arr;
