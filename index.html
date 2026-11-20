@@ -1718,36 +1718,38 @@ function buildTableView(rows, kind) {
     function chRender() {
       chContainer.innerHTML = '';
 
-      // Client selector bar
+      // Jump-to anchor bar
       const selBar = document.createElement('div');
-      selBar.style.cssText = 'display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap;';
-      chData.clients.forEach(client => {
-        const btn = document.createElement('button');
-        btn.textContent = client.name + ' (' + client.id + ')';
-        btn.style.cssText = 'padding:5px 12px;border-radius:6px;border:1px solid var(--border);cursor:pointer;font-size:13px;';
-        btn.style.background = (client.id === chActiveClient.id) ? 'var(--accent)' : 'var(--bg-card)';
-        btn.style.color = (client.id === chActiveClient.id) ? '#000' : 'var(--text)';
-        btn.onclick = () => { chActiveClient = client; chRender(); };
-        selBar.appendChild(btn);
+      selBar.style.cssText = 'display:flex;align-items:center;gap:8px;margin-bottom:16px;flex-wrap:wrap;position:sticky;top:0;z-index:50;background:var(--bg);padding:8px 0 8px 0;border-bottom:1px solid var(--border);';
+      chData.clients.forEach(c => {
+        const a = document.createElement('a');
+        a.href = '#ch-client-' + c.id;
+        a.textContent = c.name;
+        a.style.cssText = 'padding:4px 10px;border-radius:6px;border:1px solid var(--border);cursor:pointer;font-size:12px;background:var(--bg-card);color:var(--accent);text-decoration:none;';
+        selBar.appendChild(a);
       });
       // Add client button
       const addClientBtn = document.createElement('button');
       addClientBtn.textContent = '+ Add Client';
-      addClientBtn.style.cssText = 'padding:5px 12px;border-radius:6px;border:1px dashed var(--border);cursor:pointer;font-size:13px;background:transparent;color:var(--text-dim);';
+      addClientBtn.style.cssText = 'padding:4px 10px;border-radius:6px;border:1px dashed var(--border);cursor:pointer;font-size:12px;background:transparent;color:var(--text-dim);';
       addClientBtn.onclick = () => {
         const id = prompt('Client Account ID (e.g. N024488):');
         if (!id) return;
         const name = prompt('Client Name:');
         if (!name) return;
         chData.clients.push({ id: id.trim(), name: name.trim(), cash: 0, holdings: [], pending_orders: [] });
-        chActiveClient = chData.clients[chData.clients.length - 1];
         chSave(chData);
         chRender();
       };
       selBar.appendChild(addClientBtn);
       chContainer.appendChild(selBar);
 
-      const client = chActiveClient;
+      // Render all clients in a vertical stack
+      chData.clients.forEach(client => {
+      const clientSection = document.createElement('div');
+      clientSection.id = 'ch-client-' + client.id;
+      clientSection.style.cssText = 'margin-bottom:36px;padding-bottom:24px;border-bottom:2px solid var(--border);';
+      chContainer.appendChild(clientSection);
 
       // Compute totals
       let totalCostBasis = 0, totalMktValue = 0;
@@ -1826,7 +1828,7 @@ function buildTableView(rows, kind) {
       cashInput.onkeydown = e => { if (e.key === 'Enter') cashInput.blur(); };
       cashRow.appendChild(cashInput);
       topSection.appendChild(cashRow);
-      chContainer.appendChild(topSection);
+      // (topSection appended to clientSection at end)
 
       // Main layout: table + pending trades side by side
       const mainRow = document.createElement('div');
@@ -1952,13 +1954,13 @@ function buildTableView(rows, kind) {
             // + toggle button
             if (hasLots) {
               const expBtn = document.createElement('button');
-              expBtn.textContent = chExpanded.has(h.sym) ? '−' : '+';
+              expBtn.textContent = chExpanded.has(client.id+':'+h.sym) ? '−' : '+';
               expBtn.title = 'Show purchase history';
               expBtn.style.cssText = 'vertical-align:middle;width:14px;height:14px;border-radius:2px;border:1px solid var(--border);background:var(--btn-bg);color:var(--accent);cursor:pointer;font-size:10px;font-weight:700;line-height:1;padding:0;margin-right:4px;display:inline-flex;align-items:center;justify-content:center;';
               expBtn.onclick = (e) => {
                 e.stopPropagation();
-                if (chExpanded.has(h.sym)) chExpanded.delete(h.sym);
-                else chExpanded.add(h.sym);
+                if (chExpanded.has(client.id+':'+h.sym)) chExpanded.delete(client.id+':'+h.sym);
+                else chExpanded.add(client.id+':'+h.sym);
                 chRender();
               };
               td.appendChild(expBtn);
@@ -2012,7 +2014,7 @@ function buildTableView(rows, kind) {
         tbody.appendChild(tr);
 
         // Expansion row: purchase history breakdown
-        if (chExpanded.has(h.sym)) {
+        if (chExpanded.has(client.id+':'+h.sym)) {
           const origH = client.holdings.find(x => x.sym === h.sym);
           const lots = (origH && origH.lots) || [];
           const expTr = document.createElement('tr');
@@ -2264,7 +2266,9 @@ function buildTableView(rows, kind) {
       }
 
       mainRow.appendChild(rightDiv);
-      chContainer.appendChild(mainRow);
+      clientSection.appendChild(topSection);
+      clientSection.appendChild(mainRow);
+      }); // end chData.clients.forEach
     }
 
     chRender();
