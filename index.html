@@ -1300,7 +1300,7 @@ function buildTableView(rows, kind) {
 
   } else if (kind === 'client_holdings') {
     // ---- Client Holdings — multi-client portfolio tracker ----
-    const CH_KEY = 'client_holdings_v23';
+    const CH_KEY = 'client_holdings_v24';
 
     // Seed data: computed from TradeDetailsAndSummary_N024487_2026_27_VINOD_BHATIA.csv
     // avg_cost = weighted average of all buy trades; shares = net open qty
@@ -1328,9 +1328,11 @@ function buildTableView(rows, kind) {
           { sym: 'LIQUIDCASE',name: 'Zerodha Liquid Case ETF',        shares: 150987, avg_cost: 116.45,   last_price: 0, lots: [{"date":"16 Oct 2026","qty":150987,"rate":116.45,"amount":17582436.15}] },
         ],
         pending_orders: [
-          { sym: 'TANFACIND', bs: 'S', qty: '156', price: '3549', notes: '' },
-          { sym: 'NEOGEN', bs: 'B', qty: '322', price: '2551.9', notes: '' },
-          { sym: 'ONESOURCE', bs: 'B', qty: '540', price: '1541.9', notes: '' }
+          { sym: 'TANFACIND', bs: 'S', qty: '156', price: '3549', notes: 'GTD' },
+          { sym: 'NEOGEN', bs: 'B', qty: '322', price: '2551.9', notes: 'GTD' },
+          { sym: 'ONESOURCE', bs: 'B', qty: '540', price: '1541.9', notes: 'GTD' },
+          { sym: 'AEROFLEX', bs: 'S', qty: '1230', price: '694.4', notes: 'GTT' },
+          { sym: 'MANINDS', bs: 'S', qty: '878', price: '999.95', notes: 'GTT' }
         ]
       },
       {
@@ -1355,7 +1357,11 @@ function buildTableView(rows, kind) {
           { sym: 'SBCL', name: 'Shivalik Bimetal Controls Limited', shares: 207, avg_cost: 719.14, last_price: 0, lots: [{"date":"11 May 2026","qty":17,"rate":601.0,"amount":10217.0},{"date":"20 May 2026","qty":110,"rate":667.0,"amount":73370.0},{"date":"05 Nov 2026","qty":80,"rate":1024.71,"amount":81976.6}] },
           { sym: 'ZTECH', name: 'Z-Tech (India) Limited', shares: 600, avg_cost: 542.7, last_price: 0, lots: [{"date":"09 Jul 2026","qty":300,"rate":590.1,"amount":177030.0},{"date":"19 Aug 2026","qty":300,"rate":495.3,"amount":148590.0}] }
         ],
-        pending_orders: []
+        pending_orders: [
+          { sym: 'TANFACIND', bs: 'S', qty: '16', price: '3599.15', notes: 'GTD' },
+          { sym: 'NEOGEN', bs: 'B', qty: '34', price: '2551.7', notes: 'GTD' },
+          { sym: 'ONESOURCE', bs: 'B', qty: '56', price: '1541.7', notes: 'GTD' }
+        ]
       },
       {
         id: 'SNRN1235',
@@ -1379,7 +1385,11 @@ function buildTableView(rows, kind) {
           { sym: 'SBCL', name: 'Shivalik Bimetal Controls Limited', shares: 7848, avg_cost: 569.28, last_price: 0, lots: [{"date":"01 Apr 2026","qty":1876,"rate":410.8,"amount":770660.8},{"date":"23 Apr 2026","qty":1332,"rate":531.34,"amount":707744.1},{"date":"28 Apr 2026","qty":1168,"rate":625.33,"amount":730379.6},{"date":"11 May 2026","qty":1310,"rate":600.93,"amount":787218.25},{"date":"20 May 2026","qty":1272,"rate":667.0,"amount":848424.0},{"date":"05 Nov 2026","qty":890,"rate":1025.15,"amount":912385.0}] },
           { sym: 'ZTECH', name: 'Z-Tech (India) Limited', shares: 5100, avg_cost: 581.44, last_price: 0, lots: [{"date":"01 Jul 2026","qty":1200,"rate":629.96,"amount":755955.0},{"date":"02 Jul 2026","qty":1800,"rate":650.0,"amount":1170000.0},{"date":"19 Aug 2026","qty":2100,"rate":494.95,"amount":1039395.0}] }
         ],
-        pending_orders: []
+        pending_orders: [
+          { sym: 'NEOGEN', bs: 'B', qty: '380', price: '2551.9', notes: 'GTD' },
+          { sym: 'ONESOURCE', bs: 'B', qty: '632', price: '1541.9', notes: 'GTD' },
+          { sym: 'TANFACIND', bs: 'S', qty: '148', price: '3599.05', notes: 'GTD' }
+        ]
       },
       {
         id: 'SNRN1243',
@@ -1405,7 +1415,11 @@ function buildTableView(rows, kind) {
           { sym: 'SHAILY', name: 'Shaily Engineering Plastics Limited', shares: 192, avg_cost: 3001.6, last_price: 0, lots: [{"date":"02 Jul 2026","qty":12,"rate":2912.15,"amount":34945.8},{"date":"03 Jul 2026","qty":36,"rate":2914.39,"amount":104918.1},{"date":"08 Jul 2026","qty":36,"rate":2810.55,"amount":101179.8},{"date":"25 Aug 2026","qty":72,"rate":3225.1,"amount":232207.2},{"date":"02 Sep 2026","qty":36,"rate":3150.1,"amount":113403.6}] },
           { sym: 'ZTECH', name: 'Z-Tech (India) Limited', shares: 900, avg_cost: 583.43, last_price: 0, lots: [{"date":"08 Jul 2026","qty":300,"rate":600.1,"amount":180030.0},{"date":"09 Jul 2026","qty":300,"rate":590.1,"amount":177030.0},{"date":"17 Jul 2026","qty":300,"rate":560.1,"amount":168030.0}] }
         ],
-        pending_orders: []
+        pending_orders: [
+          { sym: 'ONESOURCE', bs: 'B', qty: '74', price: '1541.1', notes: 'GTD' },
+          { sym: 'TANFACIND', bs: 'S', qty: '48', price: '3599.65', notes: 'GTD' },
+          { sym: 'NEOGEN', bs: 'B', qty: '44', price: '2551.1', notes: 'GTD' }
+        ]
       },
       {
         id: 'SNRN1209',
@@ -1431,7 +1445,11 @@ function buildTableView(rows, kind) {
           { sym: 'SBCL', name: 'Shivalik Bimetal Controls Limited', shares: 446, avg_cost: 707.16, last_price: 0, lots: [{"date":"11 May 2026","qty":102,"rate":601.0,"amount":61302.0},{"date":"20 May 2026","qty":200,"rate":667.0,"amount":133400.0},{"date":"05 Nov 2026","qty":144,"rate":1024.3,"amount":147499.2}] },
           { sym: 'ZTECH', name: 'Z-Tech (India) Limited', shares: 1200, avg_cost: 565.45, last_price: 0, lots: [{"date":"02 Jul 2026","qty":300,"rate":650.0,"amount":195000.0},{"date":"09 Jul 2026","qty":300,"rate":590.1,"amount":177030.0},{"date":"04 Aug 2026","qty":300,"rate":525.8,"amount":157740.0},{"date":"19 Aug 2026","qty":300,"rate":495.9,"amount":148770.0}] }
         ],
-        pending_orders: []
+        pending_orders: [
+          { sym: 'ONESOURCE', bs: 'B', qty: '102', price: '1542.2', notes: 'GTD' },
+          { sym: 'NEOGEN', bs: 'B', qty: '62', price: '2551.2', notes: 'GTD' },
+          { sym: 'TANFACIND', bs: 'S', qty: '68', price: '3599.55', notes: 'GTD' }
+        ]
       },
       {
         id: 'SNRN1208',
@@ -1455,7 +1473,11 @@ function buildTableView(rows, kind) {
           { sym: 'SHAILY', name: 'Shaily Engineering Plastics Limited', shares: 660, avg_cost: 1920.08, last_price: 0, lots: [{"date":"02 Jul 2025","qty":254,"rate":1632.9,"amount":414756.6},{"date":"10 Jul 2025","qty":65,"rate":1601.0,"amount":104065.0},{"date":"18 Sep 2025","qty":50,"rate":2400.0,"amount":120000.0},{"date":"14 Oct 2025","qty":45,"rate":2351.0,"amount":105795.0},{"date":"03 Dec 2025","qty":50,"rate":2500.1,"amount":125005.0},{"date":"19 Dec 2025","qty":46,"rate":2301.0,"amount":105846.0},{"date":"12 Jan 2026","qty":52,"rate":2201.0,"amount":114452.0},{"date":"21 Jan 2026","qty":50,"rate":2007.0,"amount":100350.0},{"date":"13 Feb 2026","qty":48,"rate":1938.9,"amount":93067.2}] },
           { sym: 'ZTECH', name: 'Z-Tech (India) Limited', shares: 1500, avg_cost: 570.31, last_price: 0, lots: [{"date":"02 Jul 2026","qty":300,"rate":650.0,"amount":195000.0},{"date":"09 Jul 2026","qty":300,"rate":590.1,"amount":177030.0},{"date":"10 Jul 2026","qty":300,"rate":590.1,"amount":177030.0},{"date":"04 Aug 2026","qty":300,"rate":525.5,"amount":157650.0},{"date":"19 Aug 2026","qty":300,"rate":495.85,"amount":148755.0}] }
         ],
-        pending_orders: []
+        pending_orders: [
+          { sym: 'ONESOURCE', bs: 'B', qty: '134', price: '1541.3', notes: 'GTD' },
+          { sym: 'TANFACIND', bs: 'S', qty: '90', price: '3599.5', notes: 'GTD' },
+          { sym: 'NEOGEN', bs: 'B', qty: '80', price: '2551.3', notes: 'GTD' }
+        ]
       },
       {
         id: 'SNRN1213',
@@ -1500,7 +1522,11 @@ function buildTableView(rows, kind) {
           { sym: 'SHAILY', name: 'Shaily Engineering Plastics Limited', shares: 441, avg_cost: 1905.75, last_price: 0, lots: [{"date":"27 May 2025","qty":21,"rate":1850.1,"amount":38852.1},{"date":"30 Jun 2025","qty":30,"rate":1692.7,"amount":50781.0},{"date":"09 Jul 2025","qty":62,"rate":1615.0,"amount":100130.0},{"date":"18 Sep 2025","qty":50,"rate":2400.0,"amount":120000.0},{"date":"19 Sep 2025","qty":50,"rate":2351.0,"amount":117550.0},{"date":"03 Dec 2025","qty":50,"rate":2500.1,"amount":125005.0},{"date":"19 Dec 2025","qty":40,"rate":2301.0,"amount":92040.0},{"date":"12 Jan 2026","qty":48,"rate":2201.0,"amount":105648.0},{"date":"21 Jan 2026","qty":44,"rate":2009.0,"amount":88396.0},{"date":"13 Feb 2026","qty":46,"rate":1950.87,"amount":89740.0}] },
           { sym: 'ZTECH', name: 'Z-Tech (India) Limited', shares: 900, avg_cost: 578.57, last_price: 0, lots: [{"date":"23 Jun 2026","qty":300,"rate":590.1,"amount":177030.0},{"date":"02 Jul 2026","qty":300,"rate":650.0,"amount":195000.0},{"date":"19 Aug 2026","qty":300,"rate":495.6,"amount":148680.0}] }
         ],
-        pending_orders: []
+        pending_orders: [
+          { sym: 'ONESOURCE', bs: 'B', qty: '92', price: '1541.6', notes: 'GTD' },
+          { sym: 'NEOGEN', bs: 'B', qty: '56', price: '2551.6', notes: 'GTD' },
+          { sym: 'TANFACIND', bs: 'S', qty: '28', price: '3599.3', notes: 'GTD' }
+        ]
       },
       {
         id: 'N024328',
@@ -1525,7 +1551,11 @@ function buildTableView(rows, kind) {
           { sym: 'SBCL', name: 'Shivalik Bimetal Controls Limited', shares: 1545, avg_cost: 562.57, last_price: 0, lots: [{"date":"01 Apr 2026","qty":458,"rate":411.2,"amount":188329.6},{"date":"23 Apr 2026","qty":288,"rate":530.51,"amount":152787.65},{"date":"28 Apr 2026","qty":262,"rate":625.77,"amount":163951.6},{"date":"11 May 2026","qty":51,"rate":601.0,"amount":30651.0},{"date":"20 May 2026","qty":286,"rate":667.0,"amount":190762.0},{"date":"05 Nov 2026","qty":200,"rate":1025.3,"amount":205060.0}] },
           { sym: 'ZTECH', name: 'Z-Tech (India) Limited', shares: 1200, avg_cost: 581.42, last_price: 0, lots: [{"date":"23 Jun 2026","qty":600,"rate":590.1,"amount":354060.0},{"date":"02 Jul 2026","qty":300,"rate":650.0,"amount":195000.0},{"date":"19 Aug 2026","qty":300,"rate":495.5,"amount":148650.0}] }
         ],
-        pending_orders: []
+        pending_orders: [
+          { sym: 'ONESOURCE', bs: 'B', qty: '148', price: '1541.6', notes: 'GTD' },
+          { sym: 'TANFACIND', bs: 'S', qty: '32', price: '3599.25', notes: 'GTD' },
+          { sym: 'NEOGEN', bs: 'B', qty: '88', price: '2551.6', notes: 'GTD' }
+        ]
       },
       {
         id: 'N024158',
@@ -1550,7 +1580,11 @@ function buildTableView(rows, kind) {
           { sym: 'SBCL', name: 'Shivalik Bimetal Controls Limited', shares: 1098, avg_cost: 568.7, last_price: 0, lots: [{"date":"01 Apr 2026","qty":158,"rate":411.17,"amount":64964.86},{"date":"23 Apr 2026","qty":204,"rate":530.97,"amount":108318.45},{"date":"28 Apr 2026","qty":184,"rate":626.05,"amount":115193.2},{"date":"11 May 2026","qty":204,"rate":601.0,"amount":122604.0},{"date":"20 May 2026","qty":206,"rate":667.0,"amount":137402.0},{"date":"05 Nov 2026","qty":142,"rate":1025.2,"amount":145578.4}] },
           { sym: 'ZTECH', name: 'Z-Tech (India) Limited', shares: 1200, avg_cost: 555.33, last_price: 0, lots: [{"date":"23 Jun 2026","qty":300,"rate":590.1,"amount":177030.0},{"date":"02 Jul 2026","qty":300,"rate":650.0,"amount":195000.0},{"date":"19 Aug 2026","qty":600,"rate":490.6,"amount":294360.0}] }
         ],
-        pending_orders: []
+        pending_orders: [
+          { sym: 'NEOGEN', bs: 'B', qty: '62', price: '2551.8', notes: 'GTD' },
+          { sym: 'TANFACIND', bs: 'S', qty: '66', price: '3599.1', notes: 'GTD' },
+          { sym: 'ONESOURCE', bs: 'B', qty: '104', price: '1541.8', notes: 'GTD' }
+        ]
       },
       {
         id: 'N025427',
@@ -1574,7 +1608,11 @@ function buildTableView(rows, kind) {
           { sym: 'SHAILY', name: 'Shaily Engineering Plastics Ltd', shares: 292, avg_cost: 1648.81, last_price: 0, lots: [{"date":"4 Dec 2024","qty":151,"rate":1378.18,"amount":208105.18},{"date":"6 Dec 2024","qty":46,"rate":1313.34,"amount":60413.64},{"date":"3 Dec 2025","qty":25,"rate":2506.47,"amount":62661.75},{"date":"19 Dec 2025","qty":24,"rate":2306.86,"amount":55364.64},{"date":"12 Jan 2026","qty":20,"rate":2206.61,"amount":44132.20},{"date":"13 Feb 2026","qty":26,"rate":1952.84,"amount":50773.84}] },
           { sym: 'ZTECH', name: 'Z-Tech (India) Limited', shares: 600, avg_cost: 542.75, last_price: 0, lots: [{"date":"09 Jul 2026","qty":300,"rate":590.1,"amount":177030.0},{"date":"19 Aug 2026","qty":300,"rate":495.4,"amount":148620.0}] }
         ],
-        pending_orders: []
+        pending_orders: [
+          { sym: 'ONESOURCE', bs: 'B', qty: '62', price: '1541.7', notes: 'GTD' },
+          { sym: 'TANFACIND', bs: 'S', qty: '18', price: '3599.2', notes: 'GTD' },
+          { sym: 'NEOGEN', bs: 'B', qty: '36', price: '2551.7', notes: 'GTD' }
+        ]
       },
       {
         id: 'SNRN1210',
@@ -1598,7 +1636,11 @@ function buildTableView(rows, kind) {
           { sym: 'SHAILY', name: 'Shaily Engineering Plastics Ltd', shares: 417, avg_cost: 1456.61, last_price: 0, lots: [{"date":"27 Sep 2024","qty":133,"rate":1041.18,"amount":138476.94},{"date":"3 Oct 2024","qty":70,"rate":1013.13,"amount":70919.10},{"date":"4 Oct 2024","qty":70,"rate":973.47,"amount":68142.90},{"date":"3 Dec 2025","qty":40,"rate":2506.47,"amount":100258.80},{"date":"19 Dec 2025","qty":40,"rate":2306.86,"amount":92274.40},{"date":"12 Jan 2026","qty":44,"rate":2206.61,"amount":97090.84},{"date":"21 Jan 2026","qty":20,"rate":2012.11,"amount":40242.20}] },
           { sym: 'ZTECH', name: 'Z-Tech (India) Limited', shares: 900, avg_cost: 578.68, last_price: 0, lots: [{"date":"02 Jul 2026","qty":300,"rate":650.0,"amount":195000.0},{"date":"08 Jul 2026","qty":300,"rate":590.1,"amount":177030.0},{"date":"19 Aug 2026","qty":300,"rate":495.95,"amount":148785.0}] }
         ],
-        pending_orders: []
+        pending_orders: [
+          { sym: 'ONESOURCE', bs: 'B', qty: '86', price: '1541.2', notes: 'GTD' },
+          { sym: 'TANFACIND', bs: 'S', qty: '24', price: '3599.6', notes: 'GTD' },
+          { sym: 'NEOGEN', bs: 'B', qty: '52', price: '2551.2', notes: 'GTD' }
+        ]
       },
       {
         id: 'SNRN1211',
@@ -1622,7 +1664,11 @@ function buildTableView(rows, kind) {
           { sym: 'SHAILY', name: 'Shaily Engineering Plastics Ltd', shares: 324, avg_cost: 2532.13, last_price: 0, lots: [{"date":"19 Dec 2025","qty":100,"rate":2306.86,"amount":230686.00},{"date":"12 Jan 2026","qty":112,"rate":2206.61,"amount":247140.32},{"date":"18 Nov 2026","qty":112,"rate":3058.77,"amount":342582.24}] },
           { sym: 'ZTECH', name: 'Z-Tech (India) Limited', shares: 2100, avg_cost: 574.2, last_price: 0, lots: [{"date":"01 Jul 2026","qty":600,"rate":629.45,"amount":377670.0},{"date":"09 Jul 2026","qty":300,"rate":590.1,"amount":177030.0},{"date":"10 Jul 2026","qty":600,"rate":590.1,"amount":354060.0},{"date":"19 Aug 2026","qty":600,"rate":495.1,"amount":297060.0}] }
         ],
-        pending_orders: []
+        pending_orders: [
+          { sym: 'NEOGEN', bs: 'B', qty: '134', price: '2551.8', notes: 'GTD' },
+          { sym: 'ONESOURCE', bs: 'B', qty: '224', price: '1541.8', notes: 'GTD' },
+          { sym: 'TANFACIND', bs: 'S', qty: '51', price: '3599.05', notes: 'GTD' }
+        ]
       },
       {
         id: 'SNRN1207',
@@ -1651,7 +1697,11 @@ function buildTableView(rows, kind) {
           { sym: 'SHAILY', name: 'Shaily Engineering Plastics Limited', shares: 268, avg_cost: 1933.46, last_price: 0, lots: [{"date":"30 Jun 2025","qty":84,"rate":1701.55,"amount":142930.2},{"date":"18 Sep 2025","qty":30,"rate":2400.0,"amount":72000.0},{"date":"03 Dec 2025","qty":30,"rate":2500.1,"amount":75003.0},{"date":"19 Dec 2025","qty":24,"rate":2301.0,"amount":55224.0},{"date":"12 Jan 2026","qty":26,"rate":2201.0,"amount":57226.0},{"date":"21 Jan 2026","qty":24,"rate":2010.0,"amount":48240.0},{"date":"13 Feb 2026","qty":50,"rate":1935.27,"amount":96763.3}] },
           { sym: 'ZTECH', name: 'Z-Tech (India) Limited', shares: 300, avg_cost: 590.1, last_price: 0, lots: [{"date":"23 Jun 2026","qty":300,"rate":590.1,"amount":177030.0}] }
         ],
-        pending_orders: []
+        pending_orders: [
+          { sym: 'ONESOURCE', bs: 'B', qty: '56', price: '1541.3', notes: 'GTD' },
+          { sym: 'TANFACIND', bs: 'S', qty: '16', price: '3599.45', notes: 'GTD' },
+          { sym: 'NEOGEN', bs: 'B', qty: '34', price: '2551.3', notes: 'GTD' }
+        ]
       },
       {
         id: 'SNRN1242',
@@ -1676,7 +1726,11 @@ function buildTableView(rows, kind) {
           { sym: 'SHAILY', name: 'Shaily Engineering Plastics Ltd', shares: 370, avg_cost: 1770.58, last_price: 0, lots: [{"date":"26 Jun 2025","qty":210,"rate":1680.00,"amount":352800.00},{"date":"27 Jun 2025","qty":120,"rate":1685.30,"amount":202236.00},{"date":"8 Dec 2025","qty":40,"rate":2502.00,"amount":100080.00}] },
           { sym: 'UBL', name: 'United Breweries Ltd', shares: 120, avg_cost: 10.78, last_price: 0, lots: [{"date":"7 Jul 2026","qty":120,"rate":10.78,"amount":1293.60}] }
         ],
-        pending_orders: []
+        pending_orders: [
+          { sym: 'TANFACIND', bs: 'S', qty: '18', price: '3599.7', notes: 'GTD' },
+          { sym: 'ONESOURCE', bs: 'B', qty: '74', price: '1541.1', notes: 'GTD' },
+          { sym: 'NEOGEN', bs: 'B', qty: '44', price: '2551.1', notes: 'GTD' }
+        ]
       },
       {
         id: 'SNRN1244',
@@ -1702,7 +1756,11 @@ function buildTableView(rows, kind) {
           { sym: 'SHYAMMETL', name: 'Shyam Metalics and Energy Limited', shares: 194, avg_cost: 1060.9, last_price: 0, lots: [{"date":"31 Aug 2026","qty":48,"rate":1091.0,"amount":52368.0},{"date":"01 Sep 2026","qty":48,"rate":1071.0,"amount":51408.0},{"date":"15 Sep 2026","qty":50,"rate":1051.0,"amount":52550.0},{"date":"16 Sep 2026","qty":48,"rate":1031.0,"amount":49488.0}] },
           { sym: 'ZTECH', name: 'Z-Tech (India) Limited', shares: 600, avg_cost: 497.55, last_price: 0, lots: [{"date":"14 Aug 2026","qty":300,"rate":505.0,"amount":151500.0},{"date":"19 Aug 2026","qty":300,"rate":490.1,"amount":147030.0}] }
         ],
-        pending_orders: []
+        pending_orders: [
+          { sym: 'NEOGEN', bs: 'B', qty: '20', price: '2551', notes: 'GTD' },
+          { sym: 'ONESOURCE', bs: 'B', qty: '34', price: '1541', notes: 'GTD' },
+          { sym: 'TANFACIND', bs: 'S', qty: '22', price: '3599.75', notes: 'GTD' }
+        ]
       },
       {
         id: 'NRO270',
