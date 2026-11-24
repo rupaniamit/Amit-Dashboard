@@ -1893,6 +1893,49 @@ function buildTableView(rows, kind) {
         chRender();
       };
       selBar.appendChild(addClientBtn);
+
+      // Download CSV button
+      const dlBtn = document.createElement('button');
+      dlBtn.textContent = '⬇ Download CSV';
+      dlBtn.style.cssText = 'padding:4px 12px;border-radius:6px;border:1px solid var(--accent);cursor:pointer;font-size:12px;background:transparent;color:var(--accent);margin-left:auto;';
+      dlBtn.onclick = () => {
+        const rows = [['Client','Account ID','Symbol','Shares','Avg Cost','Last Price','Current Value','P&L','P&L %','Lot Date','Lot Qty','Lot Rate']];
+        chData.clients.forEach(client => {
+          client.holdings.forEach(h => {
+            const lp = h.last_price || 0;
+            const cv = lp ? h.shares * lp : '';
+            const pl = lp ? (lp - h.avg_cost) * h.shares : '';
+            const plPct = lp && h.avg_cost ? ((lp - h.avg_cost) / h.avg_cost * 100).toFixed(2) : '';
+            if (!h.lots || h.lots.length === 0) {
+              rows.push([client.name, client.id, h.sym, h.shares, h.avg_cost, lp||'', cv, pl, plPct, '', '', '']);
+            } else {
+              h.lots.forEach((lot, i) => {
+                if (i === 0) {
+                  rows.push([client.name, client.id, h.sym, h.shares, h.avg_cost, lp||'', cv, pl, plPct, lot.date, lot.qty, lot.rate]);
+                } else {
+                  rows.push(['', '', '', '', '', '', '', '', '', lot.date, lot.qty, lot.rate]);
+                }
+              });
+            }
+          });
+          // Cash row
+          if (client.cash) {
+            rows.push([client.name, client.id, 'CASH', '', '', '', client.cash, '', '', '', '', '']);
+          }
+        });
+        const csv = rows.map(r => r.map(v => {
+          const s = String(v === undefined || v === null ? '' : v);
+          return s.includes(',') || s.includes('"') || s.includes('\n') ? '"' + s.replace(/"/g,'""') + '"' : s;
+        }).join(',')).join('\n');
+        const blob = new Blob([csv], {type:'text/csv'});
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        const today = new Date().toISOString().slice(0,10);
+        a.download = 'Client_Holdings_' + today + '.csv';
+        a.click();
+      };
+      selBar.appendChild(dlBtn);
+
       chContainer.appendChild(selBar);
 
       // Render all clients in a vertical stack
