@@ -1974,6 +1974,125 @@ function buildTableView(rows, kind) {
 
       chContainer.appendChild(selBar);
 
+      // ── Aggregate Account Value & Cash Holdings table ──────────────────────
+      (function buildAggTable() {
+        const aggWrap = document.createElement('div');
+        aggWrap.style.cssText = 'margin-bottom:28px;';
+
+        const aggTitle = document.createElement('div');
+        aggTitle.style.cssText = 'font-size:13px;font-weight:700;color:var(--text);margin-bottom:8px;letter-spacing:.3px;';
+        aggTitle.textContent = 'Aggregate Account Value & Cash Holdings';
+        aggWrap.appendChild(aggTitle);
+
+        // Build rows from all clients
+        const aggCols = [
+          { key: 'name',       label: 'Account Name',             align: 'left'  },
+          { key: 'cash',       label: 'Cash Holding',             align: 'right' },
+          { key: 'lc',         label: 'Liquid Case Holding',      align: 'right' },
+          { key: 'cashLc',     label: 'Cash + Liquid Case',       align: 'right' },
+          { key: 'cashLcPct',  label: 'Cash+LC % of Account',     align: 'right' },
+          { key: 'total',      label: 'Total Holding',            align: 'right' },
+        ];
+
+        let aggSortCol = null, aggSortDir = 1;
+
+        function buildRows() {
+          return chData.clients.map(c => {
+            let totalMv = 0, lcVal = 0;
+            c.holdings.forEach(h => {
+              const mv = h.shares * (h.last_price || 0);
+              totalMv += mv;
+              if (h.sym === 'LIQUIDCASE') lcVal = mv;
+            });
+            const cash = parseFloat(c.cash) || 0;
+            const cashLc = cash + lcVal;
+            const total = totalMv + cash;
+            const cashLcPct = total > 0 ? cashLc / total * 100 : 0;
+            return { name: c.name, cash, lc: lcVal, cashLc, cashLcPct, total };
+          });
+        }
+
+        function renderAggTable() {
+          aggWrap.querySelectorAll('table').forEach(t => t.remove());
+
+          let rows = buildRows();
+          if (aggSortCol) {
+            rows = [...rows].sort((a, b) => {
+              let va = a[aggSortCol], vb = b[aggSortCol];
+              if (typeof va === 'string') { va = va.toLowerCase(); vb = (vb||'').toLowerCase(); }
+              return va < vb ? -aggSortDir : va > vb ? aggSortDir : 0;
+            });
+          }
+
+          // Totals row
+          const tot = rows.reduce((acc, r) => ({
+            name: 'TOTAL', cash: acc.cash + r.cash, lc: acc.lc + r.lc,
+            cashLc: acc.cashLc + r.cashLc, total: acc.total + r.total, cashLcPct: 0
+          }), { cash:0, lc:0, cashLc:0, total:0 });
+          tot.cashLcPct = tot.total > 0 ? tot.cashLc / tot.total * 100 : 0;
+
+          const tableWrap = document.createElement('div');
+          tableWrap.style.cssText = 'overflow-x:auto;';
+          const tbl = document.createElement('table');
+          tbl.style.cssText = 'border-collapse:collapse;font-size:12px;min-width:620px;';
+
+          // Header
+          const thead = document.createElement('thead');
+          const hrow = document.createElement('tr');
+          aggCols.forEach(col => {
+            const th = document.createElement('th');
+            const sortInd = aggSortCol === col.key ? (aggSortDir === 1 ? ' ▲' : ' ▼') : '';
+            th.textContent = col.label + sortInd;
+            th.style.cssText = `text-align:${col.align};padding:5px 10px;background:var(--bg-card);color:var(--text-dim);border-bottom:2px solid var(--border);white-space:nowrap;cursor:pointer;user-select:none;font-size:11px;`;
+            th.onclick = () => {
+              if (aggSortCol === col.key) aggSortDir = -aggSortDir;
+              else { aggSortCol = col.key; aggSortDir = 1; }
+              renderAggTable();
+            };
+            hrow.appendChild(th);
+          });
+          thead.appendChild(hrow);
+          tbl.appendChild(thead);
+
+          // Body
+          const tbody = document.createElement('tbody');
+          rows.forEach((r, i) => {
+            const tr = document.createElement('tr');
+            tr.style.background = i % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.02)';
+            aggCols.forEach(col => {
+              const td = document.createElement('td');
+              td.style.cssText = `text-align:${col.align};padding:5px 10px;border-bottom:1px solid var(--border);color:var(--text);white-space:nowrap;`;
+              if (col.key === 'name') td.textContent = r.name;
+              else if (col.key === 'cashLcPct') td.textContent = r.cashLcPct.toFixed(1) + '%';
+              else td.textContent = '₹' + fmtInt(r[col.key]);
+              tbody.appendChild(td);
+            });
+            tbody.appendChild(tr);
+          });
+
+          // Totals row
+          const totTr = document.createElement('tr');
+          totTr.style.cssText = 'background:rgba(255,255,255,0.06);font-weight:700;border-top:2px solid var(--border);';
+          aggCols.forEach(col => {
+            const td = document.createElement('td');
+            td.style.cssText = `text-align:${col.align};padding:6px 10px;color:var(--text);white-space:nowrap;`;
+            if (col.key === 'name') td.textContent = 'TOTAL';
+            else if (col.key === 'cashLcPct') td.textContent = tot.cashLcPct.toFixed(1) + '%';
+            else td.textContent = '₹' + fmtInt(tot[col.key]);
+            totTr.appendChild(td);
+          });
+          tbody.appendChild(totTr);
+
+          tbl.appendChild(tbody);
+          tableWrap.appendChild(tbl);
+          aggWrap.appendChild(tableWrap);
+        }
+
+        renderAggTable();
+        chContainer.appendChild(aggWrap);
+      })();
+      // ── End aggregate table ─────────────────────────────────────────────────
+
       // Render all clients in a vertical stack
       chData.clients.forEach(client => {
       const clientSection = document.createElement('div');
