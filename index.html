@@ -3474,7 +3474,7 @@ screens.forEach((s, i) => {
   panel.id = 'panel-' + s.key;
   panelsEl.appendChild(panel);
 
-  if (rows.length === 0 && s.kind !== 'filtered' && s.kind !== 'ideas' && s.kind !== 'client_holdings' && s.kind !== 'concalls_read') {
+  if (rows.length === 0 && s.kind !== 'filtered' && s.kind !== 'ideas' && s.kind !== 'client_holdings' && s.kind !== 'concalls_read' && s.kind !== 'changelog') {
     panel.innerHTML = '<div class="empty">No hits today for this screen.</div>';
     return;
   }
