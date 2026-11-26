@@ -1300,7 +1300,7 @@ function buildTableView(rows, kind) {
 
   } else if (kind === 'client_holdings') {
     // ---- Client Holdings — multi-client portfolio tracker ----
-    const CH_KEY = 'client_holdings_v31';
+    const CH_KEY = 'client_holdings_v32';
 
     // Seed data: computed from TradeDetailsAndSummary_N024487_2026_27_VINOD_BHATIA.csv
     // avg_cost = weighted average of all buy trades; shares = net open qty
@@ -1333,6 +1333,8 @@ function buildTableView(rows, kind) {
           { sym: 'NEOGEN',   bs: 'B', qty: '322',  price: '2551.9', notes: 'GTD' },
           { sym: 'MANINDS',  bs: 'S', qty: '878',  price: '999.95', notes: 'GTT' },
           { sym: 'AEROFLEX', bs: 'S', qty: '1230', price: '694.4',  notes: 'GTT' }
+        ,
+          { sym: '506854', bs: 'S', qty: '156', price: '3549', notes: 'GTT' }
         ]
       },
       {
@@ -1359,7 +1361,9 @@ function buildTableView(rows, kind) {
         ,
           { sym: 'PICCADIL', name: 'Piccadily Agro Industries Ltd', shares: 234, avg_cost: 533.64, last_price: 524.35, lots: [{"date":"25 Nov 2026","qty":234,"rate":533.64,"amount":124870.87}] }
         ],
-        pending_orders: [          { sym: 'NEOGEN', bs: 'B', qty: '34', price: '2551.7', notes: 'GTD' }        ]
+        pending_orders: [          { sym: 'NEOGEN', bs: 'B', qty: '34', price: '2551.7', notes: 'GTD' }        ,
+          { sym: '506854', bs: 'S', qty: '16', price: '3549', notes: 'GTT' }
+        ]
       },
       {
         id: 'SNRN1235',
@@ -1387,6 +1391,8 @@ function buildTableView(rows, kind) {
         ],
         pending_orders: [
           { sym: 'NEOGEN', bs: 'B', qty: '632', price: '2551.9', notes: 'GTD' },          { sym: 'NEOGEN', bs: 'B', qty: '380', price: '2551.9', notes: 'GTD' }
+        ,
+          { sym: '506854', bs: 'S', qty: '148', price: '3549', notes: 'GTT' }
         ]
       },
       {
@@ -1416,6 +1422,8 @@ function buildTableView(rows, kind) {
           { sym: 'PICCADIL', name: 'Piccadily Agro Industries Ltd', shares: 314, avg_cost: 533.06, last_price: 524.35, lots: [{"date":"25 Nov 2026","qty":314,"rate":533.06,"amount":167382.17}] }
         ],
         pending_orders: [          { sym: 'NEOGEN', bs: 'B', qty: '44', price: '2551.1', notes: 'GTD' }
+        ,
+          { sym: '506854', bs: 'S', qty: '68', price: '3549', notes: 'GTT' }
         ]
       },
       {
@@ -1445,6 +1453,8 @@ function buildTableView(rows, kind) {
           { sym: 'PICCADIL', name: 'Piccadily Agro Industries Ltd', shares: 422, avg_cost: 533.13, last_price: 524.35, lots: [{"date":"25 Nov 2026","qty":422,"rate":533.13,"amount":224982.75}] }
         ],
         pending_orders: [          { sym: 'NEOGEN', bs: 'B', qty: '62', price: '2551.2', notes: 'GTD' }
+        ,
+          { sym: '506854', bs: 'S', qty: '80', price: '3549', notes: 'GTT' }
         ]
       },
       {
@@ -1472,7 +1482,9 @@ function buildTableView(rows, kind) {
           { sym: 'PICCADIL', name: 'Piccadily Agro Industries Ltd', shares: 558, avg_cost: 533.18, last_price: 524.35, lots: [{"date":"25 Nov 2026","qty":558,"rate":533.18,"amount":297517.04}] }
         ],
         pending_orders: [
-          { sym: 'NEOGEN', bs: 'B', qty: '80', price: '2551.3', notes: 'GTD' }        ]
+          { sym: 'NEOGEN', bs: 'B', qty: '80', price: '2551.3', notes: 'GTD' }        ,
+          { sym: '506854', bs: 'S', qty: '124', price: '3549', notes: 'GTT' }
+        ]
       },
       {
         id: 'SNRN1213',
@@ -1492,7 +1504,9 @@ function buildTableView(rows, kind) {
           { sym: 'SYMBIOTEC', name: 'Symbiotec Pharmalab Limited', shares: 350, avg_cost: 1147.64, last_price: 0, lots: [{"date":"29 Sep 2026","qty":350,"rate":1147.64,"amount":401674.5}] },
           { sym: 'VELJAN', name: 'Veljan Denison Ltd', shares: 148, avg_cost: 2036.1, last_price: 0, lots: [{"date":"29 Sep 2026","qty":148,"rate":2036.1,"amount":301342.3}] }
         ],
-        pending_orders: []
+        pending_orders: [
+          { sym: '506854', bs: 'S', qty: '28', price: '3549', notes: 'GTT' }
+        ]
       },
       {
         id: 'SNRN1205',
@@ -1548,7 +1562,9 @@ function buildTableView(rows, kind) {
           { sym: 'PICCADIL', name: 'Piccadily Agro Industries Ltd', shares: 614, avg_cost: 533.54, last_price: 524.35, lots: [{"date":"25 Nov 2026","qty":614,"rate":533.54,"amount":327591.03}] }
         ],
         pending_orders: [
-          { sym: 'NEOGEN', bs: 'B', qty: '88', price: '2551.6', notes: 'GTD' }        ]
+          { sym: 'NEOGEN', bs: 'B', qty: '88', price: '2551.6', notes: 'GTD' }        ,
+          { sym: '506854', bs: 'S', qty: '32', price: '3549', notes: 'GTT' }
+        ]
       },
       {
         id: 'N024158',
@@ -1576,7 +1592,9 @@ function buildTableView(rows, kind) {
           { sym: 'PICCADIL', name: 'Piccadily Agro Industries Ltd', shares: 434, avg_cost: 533.69, last_price: 524.35, lots: [{"date":"25 Nov 2026","qty":434,"rate":533.69,"amount":231619.9}] }
         ],
         pending_orders: [
-          { sym: 'NEOGEN', bs: 'B', qty: '62', price: '2551.8', notes: 'GTD' }        ]
+          { sym: 'NEOGEN', bs: 'B', qty: '62', price: '2551.8', notes: 'GTD' }        ,
+          { sym: '506854', bs: 'S', qty: '114', price: '3549', notes: 'GTT' }
+        ]
       },
       {
         id: 'N025427',
@@ -1603,7 +1621,9 @@ function buildTableView(rows, kind) {
           { sym: 'PICCADIL', name: 'Piccadily Agro Industries Ltd', shares: 258, avg_cost: 533.59, last_price: 524.35, lots: [{"date":"25 Nov 2026","qty":258,"rate":533.59,"amount":137665.21}] }
         ],
         pending_orders: [
-          { sym: 'NEOGEN', bs: 'B', qty: '36', price: '2551.7', notes: 'GTD' }        ]
+          { sym: 'NEOGEN', bs: 'B', qty: '36', price: '2551.7', notes: 'GTD' }        ,
+          { sym: '506854', bs: 'S', qty: '18', price: '3549', notes: 'GTT' }
+        ]
       },
       {
         id: 'SNRN1210',
@@ -1630,7 +1650,9 @@ function buildTableView(rows, kind) {
           { sym: 'PICCADIL', name: 'Piccadily Agro Industries Ltd', shares: 356, avg_cost: 533.08, last_price: 524.35, lots: [{"date":"25 Nov 2026","qty":356,"rate":533.08,"amount":189778.01}] }
         ],
         pending_orders: [
-          { sym: 'NEOGEN', bs: 'B', qty: '52', price: '2551.2', notes: 'GTD' }        ]
+          { sym: 'NEOGEN', bs: 'B', qty: '52', price: '2551.2', notes: 'GTD' }        ,
+          { sym: '506854', bs: 'S', qty: '24', price: '3549', notes: 'GTT' }
+        ]
       },
       {
         id: 'SNRN1211',
@@ -1657,6 +1679,8 @@ function buildTableView(rows, kind) {
           { sym: 'PICCADIL', name: 'Piccadily Agro Industries Ltd', shares: 928, avg_cost: 533.79, last_price: 524.35, lots: [{"date":"25 Nov 2026","qty":928,"rate":533.79,"amount":495354.11}] }
         ],
         pending_orders: [          { sym: 'NEOGEN', bs: 'B', qty: '134', price: '2551.8', notes: 'GTD' }
+        ,
+          { sym: '506854', bs: 'S', qty: '51', price: '3549', notes: 'GTT' }
         ]
       },
       {
@@ -1689,7 +1713,9 @@ function buildTableView(rows, kind) {
           { sym: 'PICCADIL', name: 'Piccadily Agro Industries Ltd', shares: 234, avg_cost: 533.23, last_price: 524.35, lots: [{"date":"25 Nov 2026","qty":234,"rate":533.23,"amount":124776.95}] }
         ],
         pending_orders: [
-          { sym: 'NEOGEN', bs: 'B', qty: '34', price: '2551.3', notes: 'GTD' }        ]
+          { sym: 'NEOGEN', bs: 'B', qty: '34', price: '2551.3', notes: 'GTD' }        ,
+          { sym: '506854', bs: 'S', qty: '16', price: '3549', notes: 'GTT' }
+        ]
       },
       {
         id: 'SNRN1242',
@@ -1717,6 +1743,8 @@ function buildTableView(rows, kind) {
           { sym: 'PICCADIL', name: 'Piccadily Agro Industries Ltd', shares: 310, avg_cost: 533.18, last_price: 524.35, lots: [{"date":"25 Nov 2026","qty":310,"rate":533.18,"amount":165287.24}] }
         ],
         pending_orders: [          { sym: 'NEOGEN', bs: 'B', qty: '44', price: '2551.1', notes: 'GTD' }
+        ,
+          { sym: '506854', bs: 'S', qty: '18', price: '3549', notes: 'GTT' }
         ]
       },
       {
@@ -1746,7 +1774,9 @@ function buildTableView(rows, kind) {
           { sym: 'PICCADIL', name: 'Piccadily Agro Industries Ltd', shares: 140, avg_cost: 533.22, last_price: 524.35, lots: [{"date":"25 Nov 2026","qty":140,"rate":533.22,"amount":74651.47}] }
         ],
         pending_orders: [
-          { sym: 'NEOGEN', bs: 'B', qty: '20', price: '2551', notes: 'GTD' }        ]
+          { sym: 'NEOGEN', bs: 'B', qty: '20', price: '2551', notes: 'GTD' }        ,
+          { sym: '506854', bs: 'S', qty: '34', price: '3549', notes: 'GTT' }
+        ]
       },
       {
         id: 'NRO270',
@@ -1768,7 +1798,9 @@ function buildTableView(rows, kind) {
         ,
           { sym: 'PICCADIL', name: 'Piccadily Agro Industries Ltd', shares: 220, avg_cost: 533.39, last_price: 524.35, lots: [{"date":"25 Nov 2026","qty":220,"rate":533.39,"amount":117344.78}] }
         ],
-        pending_orders: []
+        pending_orders: [
+          { sym: '506854', bs: 'S', qty: '37', price: '3549', notes: 'GTT' }
+        ]
       },
       {
         id: 'NRO255',
@@ -1790,7 +1822,9 @@ function buildTableView(rows, kind) {
         ,
           { sym: 'PICCADIL', name: 'Piccadily Agro Industries Ltd', shares: 182, avg_cost: 533.44, last_price: 524.35, lots: [{"date":"25 Nov 2026","qty":182,"rate":533.44,"amount":97085.26}] }
         ],
-        pending_orders: []
+        pending_orders: [
+          { sym: '506854', bs: 'S', qty: '6', price: '3549', notes: 'GTT' }
+        ]
       },
       {
         id: 'NRO258',
@@ -1812,7 +1846,9 @@ function buildTableView(rows, kind) {
         ,
           { sym: 'PICCADIL', name: 'Piccadily Agro Industries Ltd', shares: 244, avg_cost: 533.49, last_price: 524.35, lots: [{"date":"25 Nov 2026","qty":244,"rate":533.49,"amount":130170.51}] }
         ],
-        pending_orders: []
+        pending_orders: [
+          { sym: '506854', bs: 'S', qty: '16', price: '3549', notes: 'GTT' }
+        ]
       }
     ];
 
