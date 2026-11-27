@@ -1301,7 +1301,7 @@ function buildTableView(rows, kind) {
 
   } else if (kind === 'client_holdings') {
     // ---- Client Holdings — multi-client portfolio tracker ----
-    const CH_KEY = 'client_holdings_v40';
+    const CH_KEY = 'client_holdings_v41';
 
     // Seed data: computed from TradeDetailsAndSummary_N024487_2026_27_VINOD_BHATIA.csv
     // avg_cost = weighted average of all buy trades; shares = net open qty
@@ -1402,7 +1402,7 @@ function buildTableView(rows, kind) {
       {
         id: 'SNRN1243',
         name: 'Anirudh HUF',
-        cash: 1873023.91,
+        cash: 1870793.37,
         holdings: [
           { sym: '506528', name: 'Keltech Energies Ltd', shares: 39, avg_cost: 14597.44, last_price: 0, lots: [{"date":"20 Aug 2026","qty":16,"rate":14100.0,"amount":225600.0},{"date":"21 Aug 2026","qty":16,"rate":13999.95,"amount":223999.2},{"date":"13 Nov 2026","qty":7,"rate":17100.15,"amount":119701.05}] },
           { sym: '506854', name: 'Tanfac Industries Ltd', shares: 68, avg_cost: 2961.87, last_price: 0, lots: [{"date":"29 Jul 2026","qty":14,"rate":2946.27,"amount":41247.78},{"date":"03 Aug 2026","qty":36,"rate":3001.0,"amount":108036.0},{"date":"05 Aug 2026","qty":18,"rate":3005.0,"amount":54090.0}] },
@@ -1412,7 +1412,8 @@ function buildTableView(rows, kind) {
           { sym: 'GOLDIAM', name: 'Goldiam International Limited', shares: 1549, avg_cost: 345.82, last_price: 0, lots: [{"date":"29 Jun 2026","qty":252,"rate":455.06,"amount":114674.18},{"date":"30 Jun 2026","qty":220,"rate":438.26,"amount":96417.99},{"date":"10 Jul 2026","qty":157,"rate":0,"amount":0},{"date":"17 Jul 2026","qty":290,"rate":345.98,"amount":100333.94},{"date":"27 Aug 2026","qty":630,"rate":355.95,"amount":224251.31}] },
           { sym: 'HBLENGINE', name: 'Hbl Engineering Ltd', shares: 232, avg_cost: 802.24, last_price: 0, lots: [{"date":"03 Jul 2026","qty":104,"rate":818.63,"amount":85137.52},{"date":"08 Jul 2026","qty":128,"rate":765.3,"amount":97958.4}] },
           { sym: 'LIQUIDCASE', name: 'Zerodhaamc - Liquidcase', shares: 10881, avg_cost: 116.45, last_price: 0, lots: [{"date":"16 Oct 2026","qty":10881,"rate":116.45,"amount":1267092.45}] },
-          { sym: 'MANINDS', name: 'Man Industries (India) Limited', shares: 634, avg_cost: 569.71, last_price: 0, lots: [{"date": "08 Jul 2026", "qty": 114, "rate": 561.08, "amount": 63963.12}, {"date": "24 Jul 2026", "qty": 134, "rate": 521.89, "amount": 69933.26}, {"date": "30 Jul 2026", "qty": 190, "rate": 524.34, "amount": 99624.6}, {"date": "12 Aug 2026", "qty": 196, "rate": 613.88, "amount": 120320.48}] },
+          
+          { sym: 'SAMBHV', name: 'Sambhv Steel Tubes Limited', shares: 2484, avg_cost: 176.61, last_price: 0, lots: [{"date": "26 Nov 2026", "qty": 2484, "rate": 176.61, "amount": 438709.86}] },
           { sym: 'MUFIN', name: 'Mufin Green Finance Limited', shares: 4221, avg_cost: 135.65, last_price: 0, lots: [{"date":"01 Jul 2026","qty":3760,"rate":136.34,"amount":512620.0},{"date":"16 Sep 2026","qty":461,"rate":130.05,"amount":59953.05}] },
           { sym: 'NEOGEN', name: 'Neogen Chemicals Limited', shares: 180, avg_cost: 2558.1, last_price: 0, lots: [{"date":"12 Oct 2026","qty":90,"rate":2535.0,"amount":228150.0},{"date":"13 Oct 2026","qty":48,"rate":2476.3,"amount":118862.4},{"date":"16 Nov 2026","qty":42,"rate":2701.1,"amount":113446.2}] },
           { sym: 'NRBBEARING', name: 'NRB Bearing Limited', shares: 968, avg_cost: 431.16, last_price: 0, lots: [{"date":"29 Jun 2026","qty":40,"rate":419.76,"amount":16790.4},{"date":"30 Jun 2026","qty":232,"rate":449.2,"amount":104214.35},{"date":"02 Jul 2026","qty":236,"rate":434.58,"amount":102560.7},{"date":"03 Jul 2026","qty":228,"rate":427.2,"amount":97401.6},{"date":"08 Jul 2026","qty":232,"rate":426.9,"amount":99040.8}] },
@@ -1732,7 +1733,7 @@ function buildTableView(rows, kind) {
       {
         id: 'SNRN1242',
         name: 'Srinivas',
-        cash: 2365367.84,
+        cash: 2331569.84,
         holdings: [
           { sym: '506528', name: 'Keltech Energies Ltd', shares: 39, avg_cost: 14597.43, last_price: 0, lots: [{"date":"20 Aug 2026","qty":16,"rate":14100.0,"amount":225600.0},{"date":"21 Aug 2026","qty":16,"rate":13999.95,"amount":223999.2},{"date":"13 Nov 2026","qty":7,"rate":17100.1,"amount":119700.7}] },
           { sym: '506854', name: 'Tanfac Industries Ltd', shares: 18, avg_cost: 2943.24, last_price: 0, lots: [{"date":"29 Jul 2026","qty":2,"rate":2935.52,"amount":5871.04},{"date":"05 Aug 2026","qty":16,"rate":3005.0,"amount":48080.0}] },
@@ -1741,7 +1742,8 @@ function buildTableView(rows, kind) {
           { sym: 'DEEDEV', name: 'Dee Development Eng Ltd', shares: 530, avg_cost: 630.15, last_price: 0, lots: [{"date":"20 Aug 2026","qty":530,"rate":630.15,"amount":333979.5}] },
           { sym: 'GOLDIAM', name: 'Goldiam International Limited', shares: 1733, avg_cost: 347.00, last_price: 0, lots: [{"date":"26 Jun 2025","qty":650,"rate":344.00,"amount":223600.00},{"date":"27 Jun 2025","qty":650,"rate":350.00,"amount":227500.00},{"date":"10 Jul 2026","qty":433,"rate":0,"amount":0}] },
           { sym: 'LIQUIDCASE', name: 'Zerodhaamc - Liquidcase', shares: 7406, avg_cost: 116.45, last_price: 0, lots: [{"date":"16 Oct 2026","qty":7406,"rate":116.45,"amount":862428.7}] },
-          { sym: 'MANINDS', name: 'Man Industries (India) Limited', shares: 587, avg_cost: 612.38, last_price: 0, lots: [{"date": "Pre-FY25-26", "qty": 391, "rate": 0, "amount": 0}, {"date": "12 Aug 2026", "qty": 196, "rate": 614.55, "amount": 120451.8}] },
+          
+          { sym: 'SAMBHV', name: 'Sambhv Steel Tubes Limited', shares: 2480, avg_cost: 176.6, last_price: 0, lots: [{"date": "26 Nov 2026", "qty": 2480, "rate": 176.6, "amount": 437978.52}] },
           { sym: 'MUFIN', name: 'Mufin Green Finance Limited', shares: 4080, avg_cost: 126.92, last_price: 0, lots: [{"date":"17 Jul 2026","qty":3300,"rate":126.17,"amount":416366.67},{"date":"16 Sep 2026","qty":780,"rate":130.1,"amount":101478.0}] },
           { sym: 'NEOGEN', name: 'Neogen Chemicals Limited', shares: 80, avg_cost: 2622.93, last_price: 0, lots: [{"date":"12 Oct 2026","qty":38,"rate":2536.53,"amount":96388.3},{"date":"16 Nov 2026","qty":42,"rate":2701.1,"amount":113446.2}] },
           { sym: 'NRBBEARING', name: 'NRB Bearing Ltd', shares: 1455, avg_cost: 387.65, last_price: 0, lots: [{"date":"20 May 2026","qty":1000,"rate":358.10,"amount":358100.00},{"date":"11 Jun 2026","qty":235,"rate":430.00,"amount":101050.00},{"date":"25 Aug 2026","qty":220,"rate":476.76,"amount":104887.20}] },
@@ -1759,7 +1761,7 @@ function buildTableView(rows, kind) {
       {
         id: 'SNRN1244',
         name: 'Veena Parakh',
-        cash: 884061.68,
+        cash: 891222.39,
         holdings: [
           { sym: '506528', name: 'Keltech Energies Ltd', shares: 19, avg_cost: 14530.73, last_price: 0, lots: [{"date":"20 Aug 2026","qty":8,"rate":14098.0,"amount":112784.0},{"date":"21 Aug 2026","qty":8,"rate":13999.95,"amount":111999.6},{"date":"13 Nov 2026","qty":3,"rate":17100.1,"amount":51300.3}] },
           { sym: '506854', name: 'Tanfac Industries Ltd', shares: 34, avg_cost: 2965.77, last_price: 0, lots: [{"date":"29 Jul 2026","qty":24,"rate":2936.24,"amount":70469.76},{"date":"21 Aug 2026","qty":10,"rate":3202.0,"amount":32020.0}] },
@@ -1769,7 +1771,8 @@ function buildTableView(rows, kind) {
           { sym: 'GOLDIAM', name: 'Goldiam International Limited', shares: 712, avg_cost: 354.68, last_price: 0, lots: [{"date":"13 Aug 2026","qty":270,"rate":370.05,"amount":99913.5},{"date":"27 Aug 2026","qty":282,"rate":355.1,"amount":100138.2},{"date":"10 Sep 2026","qty":160,"rate":328.0,"amount":52480.0}] },
           { sym: 'JGCHEM', name: 'J.G. Chemicals Limited', shares: 420, avg_cost: 614.16, last_price: 0, lots: [{"date":"31 Aug 2026","qty":80,"rate":648.4,"amount":51871.7},{"date":"01 Sep 2026","qty":84,"rate":626.0,"amount":52584.0},{"date":"01 Sep 2026","qty":84,"rate":615.1,"amount":51668.4},{"date":"02 Sep 2026","qty":82,"rate":605.1,"amount":49618.2},{"date":"11 Sep 2026","qty":90,"rate":580.05,"amount":52204.5}] },
           { sym: 'LIQUIDCASE', name: 'Zerodhaamc - Liquidcase', shares: 1979, avg_cost: 116.45, last_price: 0, lots: [{"date":"16 Oct 2026","qty":1979,"rate":116.45,"amount":230454.55}] },
-          { sym: 'MANINDS', name: 'Man Industries (India) Limited', shares: 294, avg_cost: 525.0, last_price: 0, lots: [{"date": "30 Jul 2026", "qty": 294, "rate": 526.86, "amount": 154896.84}] },
+          
+          { sym: 'SAMBHV', name: 'Sambhv Steel Tubes Limited', shares: 1108, avg_cost: 176.54, last_price: 0, lots: [{"date": "26 Nov 2026", "qty": 1108, "rate": 176.54, "amount": 195610.78}] },
           { sym: 'MUFIN', name: 'Mufin Green Finance Limited', shares: 1979, avg_cost: 130.57, last_price: 0, lots: [{"date":"30 Jul 2026","qty":1000,"rate":128.0,"amount":128000.0},{"date":"01 Sep 2026","qty":575,"rate":134.73,"amount":77470.24},{"date":"16 Sep 2026","qty":404,"rate":131.0,"amount":52924.0}] },
           { sym: 'NEOGEN', name: 'Neogen Chemicals Limited', shares: 77, avg_cost: 2562.86, last_price: 0, lots: [{"date":"12 Oct 2026","qty":36,"rate":2536.66,"amount":91319.8},{"date":"13 Oct 2026","qty":21,"rate":2476.2,"amount":52000.2},{"date":"16 Nov 2026","qty":20,"rate":2701.0,"amount":54020.0}] },
           { sym: 'NRBBEARING', name: 'NRB Bearing Limited', shares: 531, avg_cost: 465.52, last_price: 0, lots: [{"date":"14 Aug 2026","qty":325,"rate":461.0,"amount":149825.0},{"date":"25 Aug 2026","qty":96,"rate":475.6,"amount":45657.6},{"date":"27 Aug 2026","qty":110,"rate":470.1,"amount":51711.0}] },
